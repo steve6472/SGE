@@ -202,7 +202,6 @@ public class ComponentTest extends Gui
 			sprites.add(s);
 		}
 		Sprite.listPaths = true;
-		//Starting message
 		System.out.println("Started component test");
 	}
 	
