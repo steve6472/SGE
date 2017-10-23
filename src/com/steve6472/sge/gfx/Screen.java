@@ -376,9 +376,9 @@ public class Screen
 				return;
 			if (y < 0)
 				return;
-			if (x > width)
+			if (x >= width)
 				return;
-			if (y > height)
+			if (y >= height)
 				return;
 			if ((x + y * width) > width * height)
 				return;
