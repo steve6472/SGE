@@ -366,6 +366,119 @@ public class Screen
 		renderSprite(sprite, loc.getX() - sprite.getWidth() / 2, loc.getY() - sprite.getHeight() / 2);
 	}
 
+	
+	/**
+	 * 
+	 * @param rot {@code 0} = 0
+	 * @param rot {@code 1} = 90 degree
+	 * @param rot {@code 2} = 180 degree
+	 * @param rot {@code 3} = 270 degree
+	 * @param rot {@code 4} = Flip 0
+	 * @param rot {@code 5} = Flip 90 degree
+	 * @param rot {@code 6} = Flip 180 degree
+	 * @param rot {@code 7} = Flip 270 degree
+	 * 
+	 * 
+	 * @param sprite - Sprite to render
+	 * @param x - Sprite render location X
+	 * @param y - Sprite render location Y
+	 */
+	public void renderRot(Sprite sprite, int x, int y, int rot)
+	{
+		switch (rot)
+		{
+
+		// Normal render
+		default:
+			for (int i = 0; i < sprite.width; i++)
+			{
+				for (int j = 0; j < sprite.height; j++)
+				{
+					render(x + i, y + j, sprite.pixels[i + j * sprite.width]);
+				}
+			}
+			break;
+
+		case 1:
+			// 90 Rot
+			for (int i = 0; i < sprite.width; i++)
+			{
+				for (int j = 0; j < sprite.height; j++)
+				{
+					render(x + (sprite.width - i - 1), y + j, sprite.pixels[j + i * sprite.width]);
+				}
+			}
+			break;
+
+		case 2:
+			// 180 Rot
+			for (int i = 0; i < sprite.width; i++)
+			{
+				for (int j = 0; j < sprite.height; j++)
+				{
+					render(x + (sprite.width - i - 1), y + (sprite.height - j - 1), sprite.pixels[i + j * sprite.width]);
+				}
+			}
+			break;
+
+		case 3:
+			// rot 270
+			for (int i = 0; i < sprite.width; i++)
+			{
+				for (int j = 0; j < sprite.height; j++)
+				{
+					render(x + i, y + (sprite.height - j - 1), sprite.pixels[j + i * sprite.width]);
+				}
+			}
+			break;
+
+		case 4:
+			// Flip Horizontal
+			for (int i = 0; i < sprite.width; i++)
+			{
+				for (int j = 0; j < sprite.height; j++)
+				{
+					render(x + i, y + (sprite.height - j - 1), sprite.pixels[i + j * sprite.width]);
+				}
+			}
+			break;
+
+		case 5:
+			// 90 + Flip horizontal
+			for (int i = 0; i < sprite.width; i++)
+			{
+				for (int j = 0; j < sprite.height; j++)
+				{
+					render(x + i, y + j, sprite.pixels[j + i * sprite.width]);
+				}
+			}
+			break;
+
+		case 6:
+			// Flip Vertical (180 rot)
+			for (int i = 0; i < sprite.width; i++)
+			{
+				for (int j = 0; j < sprite.height; j++)
+				{
+					render(x + (sprite.width - i - 1), y + j, sprite.pixels[i + j * sprite.width]);
+				}
+			}
+			break;
+
+		case 7:
+			// rot 270 (90 + flip)
+			for (int i = 0; i < sprite.width; i++)
+			{
+				for (int j = 0; j < sprite.height; j++)
+				{
+					render(x + (sprite.width - i - 1), y + (sprite.height - j - 1), sprite.pixels[j + i * sprite.width]);
+				}
+			}
+			break;
+		}
+
+	}
+
 	public void render(double lx, double ly, int c)
 	{
 		if (c != 0 && c != 0x00ffffff)
