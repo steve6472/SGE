@@ -478,6 +478,11 @@ public class Screen
 		}
 
 	}
+	
+	public void render(Vec2 location, int c)
+	{
+		render(location.getX(), location.getY(), c);
+	}
 
 	public void render(double lx, double ly, int c)
 	{
