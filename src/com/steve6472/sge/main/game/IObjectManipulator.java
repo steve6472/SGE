@@ -55,7 +55,8 @@ public class IObjectManipulator<T extends IObject>
 			T io = (T) t.next();
 			if (io instanceof BaseEntity)
 			{
-				((BaseEntity) io).tickTasks();
+				if (((BaseEntity) io).tasks != null)
+					((BaseEntity) io).tickTasks();
 			}
 			if (tickKillable && io instanceof Killable)
 			{

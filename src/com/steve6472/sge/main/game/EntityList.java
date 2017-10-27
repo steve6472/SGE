@@ -24,13 +24,14 @@ public class EntityList
 		this.game = game;
 	}
 	
-	public final BaseEntity getEntity(int id)
+	public final BaseEntity getEntity(int id, Object...objects)
 	{
 		try
 		{
 			BaseEntity e = getEntities().get(id).newInstance();
 			e.setGame(game);
 			e.setEntityList(this);
+			e.initEntity(game, objects);
 			e.setId(id);
 			return e;
 		} catch (InstantiationException | IllegalAccessException e)
@@ -40,30 +41,23 @@ public class EntityList
 		}
 	}
 	
-	public final BaseEntity getEntity(String name)
+	public final BaseEntity getEntity(String name, Object...objects)
 	{
-		try
+		int id = 0;
+		for (int i = 0; i < getEntities().size(); i++)
 		{
-			int id = 0;
-			for (int i = 0; i < getEntities().size(); i++)
+			try
 			{
 				if (getEntities().get(i).newInstance().getName().equals(name))
 					id = i;
+			} catch (InstantiationException | IllegalAccessException e)
+			{
+				e.printStackTrace();
 			}
-			BaseEntity e = getEntities().get(id).newInstance();
-			e.setGame(game);
-			e.setEntityList(this);
-			e.initEntity(game);
-			e.setId(id);
-//			System.out.println("||| " + game);
-			return e;
-		} catch (InstantiationException | IllegalAccessException e)
-		{
-			e.printStackTrace();
-			return null;
 		}
+		return getEntity(id, objects);
 	}
-	
+
 	public final BaseEntity getEntityByClass(Class<? extends BaseEntity> clazz)
 	{
 		return getEntity(getLastName(clazz));

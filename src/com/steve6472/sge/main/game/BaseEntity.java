@@ -174,5 +174,19 @@ interface IInit
 	 * Called when creating the entity
 	 * @param game
 	 */
-	public void initEntity(BaseGame game);
+	public void initEntity(BaseGame game, Object... objects);
+	
+	default void checkClass(Object[] objects, Class<?>... classes)
+	{
+		final String errorMessage = "Wrong parameter input!";
+		
+		if (objects.length != classes.length)
+			throw new IllegalArgumentException(errorMessage);
+		
+		for (int i = 0; i < objects.length; i++)
+		{
+			if (!classes[i].isInstance(objects[i]))
+				throw new IllegalArgumentException(errorMessage + " " + classes[i].getTypeName());
+		}
+	}
 }
