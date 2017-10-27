@@ -196,6 +196,32 @@ public class Util
 		return false;
 	}
 	
+	public static String getLastClassName(Class<?> clazz) { return clazz.getName().split("\\.")[clazz.getName().split("\\.").length - 1]; }
+
+	public static int getBiggestClosetsSqrt(int count)
+	{
+		int r = count;
+		double temp = Math.sqrt(r);
+		int iteration = 0;
+		while (true)
+		{
+			if (temp == Math.floor(temp))
+			{
+				return (int) temp;
+			} else
+			{
+				r++;
+				temp = Math.sqrt(r);
+			}
+			iteration++;
+			if (iteration >= 256)
+			{
+				System.err.println("More than 256 iterations!");
+				return count;
+			}
+		}
+	}
+	
 /*
 	public static double getRandomCircleX(double radius)
 	{
