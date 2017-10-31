@@ -18,7 +18,6 @@ public abstract class Gui
 	private boolean isVisible = true;
 	protected final BaseGame game;
 	protected final Font font;
-	//Add Screen
 	/**
 	 * If true it will render components last
 	 */
@@ -42,28 +41,6 @@ public abstract class Gui
 
 	protected void renderComponents(Screen screen)
 	{
-		if (isVisible())
-		{
-			for (Iterator<Component> iter = components.iterator(); iter.hasNext();)
-			{
-				Component gc = iter.next();
-				gc.components.forEach((c) ->
-				{
-					if (c.shouldRepaint && c.isVisible())
-					{
-						c.render(screen);
-						c.shouldRepaint = false;
-					}
-						
-				});
-				if (gc.isVisible() && gc.shouldRepaint)
-				{
-					gc.render(screen);
-					gc.shouldRepaint = false;
-				}
-			}
-		}
-		/*
 		try
 		{
 			if (isVisible())
@@ -89,7 +66,7 @@ public abstract class Gui
 		} catch (ConcurrentModificationException ex)
 		{
 			
-		}*/
+		}
 	}
 
 	public final boolean isCursorInComponent(MouseHandler m, int x, int y, int w, int h)
