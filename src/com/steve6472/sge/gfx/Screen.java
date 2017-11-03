@@ -253,11 +253,16 @@ public class Screen
 
 	public void drawCircle(double x, double y, double radius, int color)
 	{
-		for (int i = 0; i < 360; i += 1)
+		drawCircle(x, y, radius, 0, 360, 1, color);
+	}
+
+	public void drawCircle(double x, double y, double radius, double from, double to, double add, int color)
+	{
+		for (double i = from; i < to; i += add)
 		{
 			double angle = i;
-			int x1 = (int) (radius * Math.cos(angle * Math.PI / 180));
-			int y1 = (int) (radius * Math.sin(angle * Math.PI / 180));
+			double x1 = radius * Math.cos(angle * Math.PI / 180);
+			double y1 = radius * Math.sin(angle * Math.PI / 180);
 			render(x + x1, y + y1, color);
 			
 		}

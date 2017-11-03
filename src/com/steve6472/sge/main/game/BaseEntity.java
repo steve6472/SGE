@@ -1,5 +1,6 @@
 package com.steve6472.sge.main.game;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.steve6472.sge.gfx.Sprite;
@@ -14,6 +15,7 @@ public abstract class BaseEntity extends Killable implements IObject, Cloneable,
 	protected EntityList entityList;
 	protected BaseGame game;
 	protected List<Task> tasks;
+	protected List<Tag> tags;
 	protected double speed = 1d;
 	protected double angle;
 	protected int id = 0;
@@ -166,6 +168,77 @@ public abstract class BaseEntity extends Killable implements IObject, Cloneable,
 	public final double getAngle() { return angle; }
 	
 	public final int getId() { return id; }
+
+	
+	/*
+	 * Tags
+	 */
+	
+	public final void initTags() { tags = new ArrayList<Tag>(); }
+	
+	public final void addTag(Tag tag) { tags.add(tag); }
+	
+	public final Tag getTag(String name)
+	{
+		for (Tag tag : tags)
+		{
+			if (tag.getName().equals(name))
+			{
+				return tag;
+			}
+		}
+		return null;
+	}
+	
+	public final List<Tag> getTags() { return tags; }
+	
+	public final boolean hasTag(String name) { return getTag(name) != null; }
+	
+	/**
+	 * If entity doesn't have the tag it will add it
+	 * @param tag
+	 */
+	public final void addTagIfDoesNotHave(Tag tag)
+	{
+		if (!hasTag(tag.getName()))
+			addTag(tag);
+	}
+	
+	/**
+	 * 
+	 * @param tagName
+	 *            Name of tag that should be removed
+	 * @return true if tag has been removed. False otherwise
+	 */
+	public final boolean removeTag(String tagName)
+	{
+		int tagIndex = 0;
+		boolean found = false;
+		
+		for (Tag tag : tags)
+		{
+			if (tag.getName().equals(tagName))
+			{
+				found = true;
+				break;
+			}
+			tagIndex++;
+		}
+		
+		if (found)
+			tags.remove(tagIndex);
+		
+		return found;
+	}
+	
+	public final void changeTag(String name, Object newValue)
+	{
+		Tag tag = getTag(name);
+		if (tag != null)
+		{
+			tag.value = newValue;
+		}
+	}
 }
 
 interface IInit
@@ -186,7 +259,7 @@ interface IInit
 		for (int i = 0; i < objects.length; i++)
 		{
 			if (!classes[i].isInstance(objects[i]))
-				throw new IllegalArgumentException(errorMessage + " " + classes[i].getTypeName());
+				throw new IllegalArgumentException(errorMessage + " " + classes[i].getTypeName() + " " + objects[i].getClass().getTypeName());
 		}
 	}
 }

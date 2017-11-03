@@ -222,6 +222,18 @@ public class Util
 		}
 	}
 	
+	public static boolean isNumber(String l)
+	{
+		try
+		{
+			new Long(l);
+			return true;
+		} catch (NumberFormatException ex)
+		{
+			return false;
+		}
+	}
+	
 /*
 	public static double getRandomCircleX(double radius)
 	{
