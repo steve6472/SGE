@@ -2,11 +2,15 @@ package com.steve6472.sge.gui;
 
 import javax.swing.JFrame;
 
+import com.steve6472.sge.gui.components.Background;
 import com.steve6472.sge.gui.components.Button;
+import com.steve6472.sge.gui.components.DragFrame;
 import com.steve6472.sge.gui.components.Panel;
 import com.steve6472.sge.gui.components.events.ButtonEvents;
 import com.steve6472.sge.gui.components.panels.PanelBase;
+import com.steve6472.sge.main.BaseGame;
 import com.steve6472.sge.main.MouseHandler;
+import com.steve6472.sge.main.game.Vec2;
 
 public class GuiUtils
 {
@@ -61,6 +65,34 @@ public class GuiUtils
 		});
 		gui.addComponent(minimalize);
 		return minimalize;
+	}
+	
+	public static void createBasicLayout(Gui gui)
+	{
+		gui.addComponent(new Background(1));
+		
+		DragFrame drag = new DragFrame();
+		drag.setLocation(2, 2);
+		drag.setSize(gui.game.getWidth() - 84, 25);
+		drag.setText(gui.game.getTitle());
+		
+		gui.addComponent(drag);
+		
+		Button exit = GuiUtils.createExitButton(gui);
+		exit.setLocation(gui.game.getWidth() - 40 - 2, 2);
+		gui.addComponent(exit);
+		
+		Button minimalise = GuiUtils.createMinimalizeButton(gui);
+		minimalise.setLocation(gui.game.getWidth() - 82, 2);
+		gui.addComponent(minimalise);
+	}
+	
+	public static Vec2 centerComponent(Gui gui, Component comp)
+	{
+		BaseGame game = gui.getGame();
+		int compWidth = comp.getWidth();
+		int compHeight = comp.getHeight();
+		return new Vec2((game.getWidth() - compWidth) / 2, (game.getHeight() - compHeight) / 2);
 	}
 
 	public static boolean isCursorInComponent(MouseHandler m, int x, int y, int w, int h)

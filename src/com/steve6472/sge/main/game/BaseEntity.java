@@ -258,8 +258,9 @@ interface IInit
 		
 		for (int i = 0; i < objects.length; i++)
 		{
-			if (!classes[i].isInstance(objects[i]))
-				throw new IllegalArgumentException(errorMessage + " " + classes[i].getTypeName() + " " + objects[i].getClass().getTypeName());
+			if (objects[i] != null)
+				if (!classes[i].isInstance(objects[i]))
+					throw new IllegalArgumentException(errorMessage + " " + classes[i].getTypeName() + " " + objects[i].getClass().getTypeName());
 		}
 	}
 }

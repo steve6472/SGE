@@ -62,6 +62,10 @@ public class Vec2
 	
 	public double getY() { return y; }
 	
+	public int getIntX() { return (int) x; }
+	
+	public int getIntY() { return (int) y; }
+	
 	public Vec2 setX(double x) { this.x = x; return this; }
 	
 	public Vec2 setY(double y) { this.y = y; return this; }
@@ -81,6 +85,10 @@ public class Vec2
 	public Vec2 left(double d) { this.x -= d; return this; }
 
 	public Vec2 right(double d) { this.x += d; return this; }
+	
+	public Vec2 devide(double d) { this.x /= d; this.y /= d; return this; }
+	
+	public Vec2 multiply(double m) { this.x /= m; this.y /= m; return this; }
 	
 	public void invert() { this.x = -x; this.y = -y; }
 

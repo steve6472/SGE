@@ -15,6 +15,8 @@ public class DragFrame extends Component
 	protected boolean renderTextInCenter = true;
 	public int textSize = 2;
 	
+	protected boolean canDrag = true;
+	
 	@Override
 	public void init(BaseGame game)
 	{
@@ -45,6 +47,8 @@ public class DragFrame extends Component
 	@Override
 	public void tick()
 	{
+		if (!canDrag)
+			return;
 //		frame.setLocationRelativeTo(null);
 		if (isCursorInComponent())
 		{
@@ -157,5 +161,15 @@ public class DragFrame extends Component
 	public boolean isTextRenderedInCenter() { return renderTextInCenter; }
 	
 	public String getText() { return text; }
+
+	public void setCanDrag(boolean c)
+	{
+		canDrag = c;
+	}
+	
+	public boolean isCanDrag()
+	{
+		return canDrag;
+	}
 
 }

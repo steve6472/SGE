@@ -93,6 +93,7 @@ public class EntityList
 		} catch (InstantiationException | IllegalAccessException e)
 		{
 			System.err.println("Can't add " + entity.getTypeName() + "! ");
+			e.printStackTrace();
 		}
 	}
 

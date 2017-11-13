@@ -24,6 +24,7 @@ public class TextField extends Component implements IFocusable
 	private boolean showCarret = false;
 	private boolean isEnabled = true;
 	private boolean centeredRender = true;
+	private boolean acceptOnlyNumbers = false;
 	private String editedText = "";
 	PanelBase back;
 	List<EnterEvent> enterEvents = new ArrayList<EnterEvent>();
@@ -114,6 +115,11 @@ public class TextField extends Component implements IFocusable
 
 	public void setEnabled(boolean isEnabled) { this.isEnabled = isEnabled; }
 	
+	
+	public boolean acceptOnlyNumbers() { return acceptOnlyNumbers; }
+	
+	public void setAcceptOnlyNumbers(boolean acceptOnlyNumbers) { this.acceptOnlyNumbers = acceptOnlyNumbers; }
+	
 
 	public boolean isCenteredRender() 	{ return centeredRender; }
 
@@ -156,6 +162,8 @@ public class TextField extends Component implements IFocusable
 	
 	private void updateText()
 	{
+		if (acceptOnlyNumbers()) text = text.replaceAll("[^0-9]","");
+		
 		editedText = Font.trimFront(getText(), getWidth() <= 10 ? 10 : getWidth() / 2 - 8, fontSize > 0 ? fontSize : 1);
 		repaint();
 	}
