@@ -1,5 +1,6 @@
 package com.steve6472.sge.gui;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
@@ -12,8 +13,9 @@ import com.steve6472.sge.main.BaseGame;
 import com.steve6472.sge.main.KeyHandler.KeyListener;
 import com.steve6472.sge.main.MouseHandler;
 
-public abstract class Gui
+public abstract class Gui implements Serializable
 {
+	private static final long serialVersionUID = 8547775087992332609L;
 	private List<Component> components = new ArrayList<Component>();
 	private boolean isVisible = true;
 	protected final BaseGame game;
@@ -39,6 +41,8 @@ public abstract class Gui
 
 	public abstract void render(Screen screen);
 
+	public void showEvent() {};
+	
 	protected void renderComponents(Screen screen)
 	{
 		try
@@ -73,8 +77,8 @@ public abstract class Gui
 	{
 		if (!isVisible())
 			return false;
-		return ( m.mouse_x >= x && m.mouse_x <= w + x)   // check if X is within range
-				   && ( m.mouse_y >= y && m.mouse_y <= h + y);
+		return ( m.getMouseX() >= x && m.getMouseX() <= w + x)   // check if X is within range
+				   && ( m.getMouseY() >= y && m.getMouseY() <= h + y);
 	}
 
 	public final void setVisible(boolean b)
@@ -145,6 +149,8 @@ public abstract class Gui
 			gc.show();
 			gc.repaint();
 		}
+		
+		showEvent();
 	}
 	
 	public boolean isVisible()
@@ -220,6 +226,16 @@ public abstract class Gui
 		repaintComponents();
 	}
 	
+	public int getComponentCount()
+	{
+		return components.size();
+	}
+	
+	public void removeAllComponents()
+	{
+		components.clear();
+	}
+	
 	public Component getComponent(int index)
 	{
 		return components.get(index);
@@ -244,6 +260,6 @@ public abstract class Gui
 	 */
 	public void drawTestPixel(Screen screen)
 	{
-		screen.render(game.getMouseHandler().mouse_x, game.getMouseHandler().mouse_y, 0xff259154);
+		screen.render(game.getMouseHandler().getMouseX(), game.getMouseHandler().getMouseY(), 0xff259154);
 	}
 }

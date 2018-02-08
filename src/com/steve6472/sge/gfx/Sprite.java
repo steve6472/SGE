@@ -147,12 +147,16 @@ public class Sprite implements Cloneable, Serializable
 		pixels = img.getRGB(0, 0, width, height, null, 0, width);
 	}
 	
+	public static boolean printPath = false;
+	
 	public Sprite(File f)
 	{
 		Sprite s = new Sprite(new int[] {0}, 1, 1);
 		try
 		{
 			s = new Sprite(ImageIO.read(f));
+			if (printPath)
+				printf("Creating new sprite from resource: " + f.getPath());
 		} catch (IOException e)
 		{
 			System.err.println("Can't load file from " + f.getPath());
@@ -160,6 +164,11 @@ public class Sprite implements Cloneable, Serializable
 		this.pixels = s.pixels;
 		this.width = s.width;
 		this.height = s.height;
+	}
+	
+	public void setPixel(int x, int y, int color)
+	{
+		pixels[x + y * width] = color;
 	}
 
 	public Sprite(BufferedImage img)
@@ -397,7 +406,10 @@ public class Sprite implements Cloneable, Serializable
 		g.translate(wPrime / 2, hPrime / 2);
 		g.rotate(toRad);
 		g.translate(-w / 2, -h / 2);
+//		AffineTransform ag = g.getTransform();
+//		AffineTransformOp op = new AffineTransformOp(ag, AffineTransformOp.TYPE_BILINEAR);
 		g.drawImage(originalImage, 0, 0, null);
+//		g.drawImage(op.filter(originalImage, null), 0, 0, null);
 		g.dispose(); // release used resources before g is garbage-collected
 		return rotatedImage;
 	}

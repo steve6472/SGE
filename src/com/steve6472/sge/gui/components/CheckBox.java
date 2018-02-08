@@ -11,6 +11,7 @@ import com.steve6472.sge.main.BaseGame;
 
 public class CheckBox extends Component
 {
+	private static final long serialVersionUID = 7880397321121670923L;
 	private boolean isChecked = false, isEnabled = true, isHovered = false;
 	private int type = 0;
 //	private short idleMouseTime = 0;
@@ -47,6 +48,7 @@ public class CheckBox extends Component
 	public void tick()
 	{
 		isHovered = isCursorInComponent(x, y, 40, 40);
+		
 		if (isHovered && !hoverRepainted)
 		{
 			repaint();
@@ -56,7 +58,8 @@ public class CheckBox extends Component
 			repaint();
 			hoverRepainted = false;
 		}
-		if (isHovered && getMouseHandler().mouse_hold && !getMouseHandler().mouse_triggered)
+		
+		if (isHovered && getMouseHandler().mouse_hold && !getMouseHandler().mouse_triggered && isEnabled())
 		{
 			toggle();
 			getMouseHandler().mouse_triggered = true;

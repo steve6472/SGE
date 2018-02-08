@@ -7,6 +7,7 @@ import com.steve6472.sge.main.BaseGame;
 
 public class Image extends Component
 {
+	private static final long serialVersionUID = 2057497336678192459L;
 	private Sprite sprite;
 	public int maxx, maxy, minx, miny;
 	private boolean setLimitedRender;

@@ -12,6 +12,7 @@ import com.steve6472.sge.main.BaseGame;
 
 public class Button extends Component implements IFocusable
 {
+	private static final long serialVersionUID = -4734082970298391201L;
 	int fontScale = 1, image_offset_x, image_offset_y;
 	protected Sprite enabled = null, disabled = null, hovered = null;
 
@@ -90,7 +91,7 @@ public class Button extends Component implements IFocusable
 
 					hoverRepainted = true;
 				}
-				onMouseClicked((b) ->
+				onMouseClicked(b ->
 				{
 					for (ButtonEvents e : events)
 					{
@@ -197,6 +198,11 @@ public class Button extends Component implements IFocusable
 	public void disable()
 	{
 		this.enabled_ = false;
+	}
+	
+	public void removeEvents()
+	{
+		events.clear();
 	}
 	
 	/*

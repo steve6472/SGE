@@ -15,6 +15,7 @@ import com.steve6472.sge.main.game.Vec2;
 
 public class TextField extends Component implements IFocusable
 {
+	private static final long serialVersionUID = 2170809387637383724L;
 	boolean isFocused = false;
 	private String text = "";
 	int carretPosition = 0;

@@ -12,6 +12,7 @@ import com.steve6472.sge.main.BaseGame;
 
 public class Background extends Panel
 {	
+	private static final long serialVersionUID = 4061909484367584836L;
 	public static boolean repaint = true;
 	
 	public Background(int id)

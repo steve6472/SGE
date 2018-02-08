@@ -7,6 +7,7 @@ import com.steve6472.sge.main.BaseGame;
 
 public class Panel extends Component
 {
+	private static final long serialVersionUID = -2331423356605156534L;
 	boolean set_limited_render = false;
 	int maxx, maxy, minx, miny, size;
 	private PanelBase panel;

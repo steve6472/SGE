@@ -9,6 +9,7 @@ import com.steve6472.sge.main.BaseGame;
 
 public class DragFrame extends Component
 {
+	private static final long serialVersionUID = -89023782322619120L;
 	protected PanelBase panel;
 	private JFrame frame;
 	protected String text;
@@ -54,16 +55,16 @@ public class DragFrame extends Component
 		{
 			if (getMouseHandler().mouse_hold && !getMouseHandler().mouse_triggered)
 			{
-				lastX = getMouseHandler().pressedMouseXOnScreen;
-				lastY = getMouseHandler().pressedMouseYOnScreen;
+				lastX = getMouseHandler().getPressedMouseXOnScreen();
+				lastY = getMouseHandler().getPressedMouseYOnScreen();
 				getMouseHandler().mouse_triggered = true;
 				b = true;
 			}
 		}
 		if (getMouseHandler().mouse_hold && b)
 		{
-			int x = getMouseHandler().mouseXOnScreen;
-			int y = getMouseHandler().mouseYOnScreen;
+			int x = getMouseHandler().getMouseXOnScreen();
+			int y = getMouseHandler().getMouseYOnScreen();
 
 			if (x != lastX || y != lastY)
 			{
@@ -116,8 +117,8 @@ public class DragFrame extends Component
 					if (frame.getLocationOnScreen().y < 0)
 						frame.setLocation(frame.getLocationOnScreen().x, 0);
 
-					lastX = getMouseHandler().mouseXOnScreen;
-					lastY = getMouseHandler().mouseYOnScreen;
+					lastX = getMouseHandler().getMouseXOnScreen();
+					lastY = getMouseHandler().getMouseYOnScreen();
 				//}
 			}
 		}
@@ -145,6 +146,9 @@ public class DragFrame extends Component
 
 	public void setText(String text)
 	{
+		if (text == null)
+			return;
+		
 		if (!text.equals(this.getText()))
 		{
 			this.text = text;

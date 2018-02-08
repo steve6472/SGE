@@ -103,6 +103,7 @@ class Test extends BaseGame
 			Gui.openGui(this, ComponentTest.class);
 			keyHandler.esc.typed = true;
 		}
+		screenshot(getKeyHandler().c);
 	}
 
 	@Override

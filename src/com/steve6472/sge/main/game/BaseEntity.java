@@ -1,13 +1,15 @@
 package com.steve6472.sge.main.game;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.steve6472.sge.gfx.Sprite;
 import com.steve6472.sge.main.BaseGame;
 
-public abstract class BaseEntity extends Killable implements IObject, Cloneable, IInit
+public abstract class BaseEntity extends Killable implements IObject, Cloneable, IInit, Serializable
 {
+	private static final long serialVersionUID = -1719377764373653659L;
 	protected Vec2 loc;
 	protected AABB box;
 	protected Blur blur;
@@ -18,6 +20,9 @@ public abstract class BaseEntity extends Killable implements IObject, Cloneable,
 	protected List<Tag> tags;
 	protected double speed = 1d;
 	protected double angle;
+	protected double cos, sin;
+	protected double xa, ya;
+	private double oldAngle;
 	protected int id = 0;
 	
 	public BaseEntity()
@@ -64,7 +69,10 @@ public abstract class BaseEntity extends Killable implements IObject, Cloneable,
 	 */
 	public void move()
 	{
-		loc.move2(getAngle(), getSpeed());
+//		loc.move2(getAngle(), getSpeed());
+		
+		loc.move(xa, ya, getSpeed());
+		
 		if (getSprite() != null)
 			setBox(new AABB(loc.getX(), loc.getY(), loc.getX() + getSprite().getWidth(), loc.getY() + getSprite().getHeight()));
 	}
@@ -76,8 +84,30 @@ public abstract class BaseEntity extends Killable implements IObject, Cloneable,
 	public void move(double angle)
 	{
 		loc.move2(angle, getSpeed());
+		
 		if (getSprite() != null)
 			setBox(new AABB(loc.getX(), loc.getY(), loc.getX() + getSprite().getWidth(), loc.getY() + getSprite().getHeight()));
+	}
+	
+	/**
+	 * Can be called to set cos & sin variables. (Should be called only once in tick() for efficiency)
+	 * @return true if cos & sin were changed false otherwise
+	 */
+	public boolean updateAngles()
+	{
+		// If angle hasn't changed do nothing
+		if (oldAngle == angle)
+			return false;
+		
+		oldAngle = angle;
+
+		cos = Math.cos(Math.toRadians(angle));
+		sin = Math.sin(Math.toRadians(angle));
+		
+		xa = ((Math.cos(Math.toRadians(angle - 90))) * 1);
+		ya = ((Math.sin(Math.toRadians(angle - 90))) * 1);
+		
+		return true;
 	}
 	
 	/**
@@ -166,6 +196,14 @@ public abstract class BaseEntity extends Killable implements IObject, Cloneable,
 	public final double getSpeed() { return speed; }
 
 	public final double getAngle() { return angle; }
+
+	public final double getCos() { return cos; }
+
+	public final double getSin() { return sin; }
+	
+	public final double getXa() { return xa; }
+	
+	public final double getYa() { return ya; }
 	
 	public final int getId() { return id; }
 

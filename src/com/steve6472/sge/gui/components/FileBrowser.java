@@ -14,7 +14,7 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.net.URISyntaxException;
+
 import javax.swing.Icon;
 import javax.swing.filechooser.FileSystemView;
 
@@ -28,6 +28,7 @@ import com.steve6472.sge.main.BaseGame;
 public class FileBrowser extends Component
 {
 	
+	private static final long serialVersionUID = 8751008575519876989L;
 	String currentPath = "C:";
 	String selected = "";
 	boolean isSelectedFolder = false;
@@ -52,13 +53,13 @@ public class FileBrowser extends Component
 		addComponent(p);
 		p.setSize(256 + 58, 25 * 12 + 16);
 		
-		try
-		{
-			currentPath = new File(FileBrowser.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getPath();
-		} catch (URISyntaxException e)
-		{
-			e.printStackTrace();
-		}
+//		try
+//		{
+//			currentPath = new File(FileBrowser.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getPath();
+//		} catch (URISyntaxException e)
+//		{
+//			e.printStackTrace();
+//		}
 		
 		files = new ItemList();
 		files.setSize(256, 25);
@@ -161,6 +162,17 @@ public class FileBrowser extends Component
 	public File getSelectedFile()
 	{
 		return new File(currentPath).listFiles()[files.getSelectedIndex()];
+	}
+	
+	public void setPath(String newPath)
+	{
+		this.currentPath = newPath;
+		listFilesFromCurrentPath();
+	}
+	
+	public void reloadList()
+	{
+		listFilesFromCurrentPath();
 	}
 	
 	public String getCurrentPath()

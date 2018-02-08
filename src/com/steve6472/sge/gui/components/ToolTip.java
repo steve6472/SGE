@@ -1,13 +1,16 @@
 package com.steve6472.sge.gui.components;
 
+import java.io.Serializable;
+
 import com.steve6472.sge.gfx.Font;
 import com.steve6472.sge.gfx.Screen;
 import com.steve6472.sge.gui.components.panels.Panel8;
 import com.steve6472.sge.gui.components.panels.PanelBase;
 import com.steve6472.sge.main.BaseGame;
 
-public class ToolTip
+public class ToolTip implements Serializable
 {
+	private static final long serialVersionUID = -5973825427874173864L;
 	int x, y, delay = 200;
 	private String text;
 	Panel background;

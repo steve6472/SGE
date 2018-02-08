@@ -1,9 +1,12 @@
 package com.steve6472.sge.main.game;
 
+import java.io.Serializable;
+
 import com.steve6472.sge.main.Util;
 
-public class Vec2
+public class Vec2 implements Serializable
 {
+	private static final long serialVersionUID = -6728175878841578459L;
 	private double x, y;
 	
 	public Vec2()
@@ -21,6 +24,11 @@ public class Vec2
 	{
 		this.x = x;
 		this.y = y;
+	}
+	
+	public Vec2 move(Vec2 a)
+	{
+		return move(a.getX(), a.getY());
 	}
 	
 	public Vec2 move(double xx, double yy)
@@ -90,6 +98,8 @@ public class Vec2
 	
 	public Vec2 multiply(double m) { this.x /= m; this.y /= m; return this; }
 	
+	public AABB toAABB(double width, double height) { return new AABB(this, width, height); }
+	
 	public void invert() { this.x = -x; this.y = -y; }
 
 	/**
@@ -106,14 +116,22 @@ public class Vec2
 		this.y += add.getY();
 		return this;
 	}
+	
+	public Vec2 round()
+	{
+		this.x = Math.round(this.x);
+		this.y = Math.round(this.y);
+		return this;
+	}
 
 	public Vec2 setLocation(double x, double y) { this.x = x; this.y = y; return this; }
 	
 	public Vec2 setLocation(Vec2 vec2)
 	{
-		this.x = vec2.clone().getX();
-		this.y = vec2.clone().getY();
-		return this;
+		if (vec2 == null) 
+			{ setLocation(0, 0); return this; }
+		else 
+			{ setLocation(vec2.clone().getX(), vec2.clone().getY()); return this; }
 	}
 
 	public static Vec2 getVec2InRange(double xmin, double xmax, double ymin, double ymax)
@@ -130,6 +148,11 @@ public class Vec2
 	public String toString()
 	{
 		return "Vec2 [x=" + x + ", y=" + y + "]";
+	}
+	
+	public String format()
+	{
+		return "X/Y: " + x + " / " + y;
 	}
 
 	public boolean equals(Object vec2)

@@ -11,6 +11,8 @@ import com.steve6472.sge.main.BaseGame;
 
 public class Slider extends Component
 {
+	private static final long serialVersionUID = 4164297008969991704L;
+
 	//TODO: Mouse Wheel scroll!
 	PanelBase sliderBack;
 	
@@ -39,7 +41,7 @@ public class Slider extends Component
 
 	protected void sliderChange()
 	{
-		privateX = getX() - getMouseHandler().mouse_x; //mouse pos relativly to component
+		privateX = getX() - getMouseHandler().getMouseX(); //mouse pos relativly to component
 		
 		changeEvent.forEach((ce) -> ce.change());
 	}
@@ -57,7 +59,7 @@ public class Slider extends Component
 
 		if (!setted)
 		{
-			onMousePressed((c) -> privateX = getX() - getMouseHandler().mouse_x);
+			onMousePressed(c -> privateX = getX() - getMouseHandler().getMouseX());
 		} else
 		{
 			setted = false;
@@ -112,7 +114,7 @@ public class Slider extends Component
 			else
 				parentComponent.repaint();
 			this.oldValue = value;
-			changeEvent.forEach((ce) -> ce.change());
+			changeEvent.forEach(ce -> ce.change());
 		}
 	}
 	

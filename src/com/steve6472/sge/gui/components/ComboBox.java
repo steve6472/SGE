@@ -14,6 +14,7 @@ import com.steve6472.sge.main.MouseHandler;
 
 public class ComboBox extends Component
 {
+	private static final long serialVersionUID = -5916694577318452150L;
 	int x, y, width, height, maxItems = 4, slider = 0;
 	Button up, down;
 	ComboBoxButton b;
@@ -327,6 +328,7 @@ public class ComboBox extends Component
 
 class ComboBoxButton extends Button
 {
+	private static final long serialVersionUID = 8367163866261346256L;
 	private PanelBase expanded = null;
 	public boolean expanded_ = false;
 

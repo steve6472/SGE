@@ -31,6 +31,7 @@ public class ButtonTest extends BaseGame
 	{
 		new Gui(this)
 		{
+			private static final long serialVersionUID = 5819368211027584975L;
 			DragFrame drag;
 			
 			@Override

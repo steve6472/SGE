@@ -13,6 +13,7 @@ import com.steve6472.sge.main.BaseGame;
 public class ItemList extends Component
 {
 
+	private static final long serialVersionUID = 4821451061681776222L;
 	protected List<Item> items = new ArrayList<Item>();
 	private List<ChangeEvent> changeEvents = new ArrayList<ChangeEvent>();
 	protected int fontSize = 1;
@@ -46,7 +47,7 @@ public class ItemList extends Component
 
 				renderText(screen, i);
 
-				screen.renderSprite(items.get((i + scroll)).sprite, getX() + 4,
+				screen.renderSprite(items.get((i + scroll)).sprite, getX() + 2,
 						getY() + i * getHeight() + (getHeight() / 2 - items.get(i + scroll).sprite.getHeight() / 2));
 			}
 		}

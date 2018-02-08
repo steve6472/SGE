@@ -7,7 +7,11 @@
 
 package com.steve6472.sge.main.game;
 
-public abstract class Task
+import java.io.Serializable;
+
+public abstract class Task implements Serializable
 {
+	private static final long serialVersionUID = -2571705598379443113L;
+
 	public abstract void tickTask(BaseEntity e);
 }

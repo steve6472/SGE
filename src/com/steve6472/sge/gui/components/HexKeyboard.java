@@ -10,6 +10,7 @@ import com.steve6472.sge.main.BaseGame;
 
 public class HexKeyboard extends Component
 {
+	private static final long serialVersionUID = 2126103972044984877L;
 	String s[] = {"1", "4", "7", "2", "5", "8", "3", "6", "9", "a", "c", "e", "b", "d", "f"};
 	Button zero, clear;
 	Panel back;

@@ -2,17 +2,20 @@ package com.steve6472.sge.main;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.steve6472.sge.gui.components.IFocusable;
 
-public class KeyHandler
+public class KeyHandler implements Serializable
 {
-	
+	private static final long serialVersionUID = 6603466075949853404L;
 	private List<KeyListener> listeners = new ArrayList<KeyListener>();
 	private int keyCode = 0;
-
+	
+	int[] specialKeys = {KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT};
+	
 	public KeyHandler(SGEMain game)
 	{
 		game.addKeyListener(new KeyAdapter()
@@ -26,9 +29,19 @@ public class KeyHandler
 				keyCode = e.getKeyCode();
 				for (KeyListener kl : listeners)
 				{
-//					System.out.println(e.getKeyCode());
 					if (kl.ifocusable.isFocused())
 						kl.keyPressed(e.getKeyChar(), e.getKeyCode());
+				}
+				for (int i : specialKeys)
+				{
+					if (i == keyCode)
+					{
+						for (KeyListener kl : listeners)
+						{
+							if (kl.ifocusable.isFocused())
+								kl.keyTyped(e.getKeyChar(), i);
+						}
+					}
 				}
 			}
 
@@ -69,6 +82,14 @@ public class KeyHandler
 	}
 
 	public static List<Key> keys = new ArrayList<Key>();
+
+	public void releaseAllKeys()
+	{
+		for (Key k : keys)
+		{
+			k.pressed = false;
+		}
+	}
 
 	//Arrows
 	public Key up = new Key(KeyEvent.VK_UP);
@@ -139,6 +160,7 @@ public class KeyHandler
 	public Key space = new Key(KeyEvent.VK_SPACE);
 	public Key plus = new Key(KeyEvent.VK_PLUS);
 	public Key backspace = new Key(KeyEvent.VK_BACK_SPACE);
+	public Key enter = new Key(KeyEvent.VK_ENTER);
 
 	public void toggleKey(int key_code, boolean is_pressed)
 	{

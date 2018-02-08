@@ -12,6 +12,7 @@ import com.steve6472.sge.main.BaseGame;
 public class TextDisplay extends Component
 {
 	
+	private static final long serialVersionUID = 4156953330410801607L;
 	private List<String> rawText = new ArrayList<String>();
 //	private int lineWarp = 32;
 	private int textSize = 1;

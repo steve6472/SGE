@@ -95,9 +95,9 @@ public class GuiUtils
 		return new Vec2((game.getWidth() - compWidth) / 2, (game.getHeight() - compHeight) / 2);
 	}
 
-	public static boolean isCursorInComponent(MouseHandler m, int x, int y, int w, int h)
+	public static boolean isCursorInRectangle(MouseHandler m, int x, int y, int w, int h)
 	{
-		return ( m.mouse_x >= x && m.mouse_x <= w + x)   // check if X is within range
-				   && ( m.mouse_y >= y && m.mouse_y <= h + y);
+		return ( m.getMouseX() >= x && m.getMouseX() <= w + x)   // check if X is within range
+				   && ( m.getMouseY() >= y && m.getMouseY()<= h + y);
 	}
 }

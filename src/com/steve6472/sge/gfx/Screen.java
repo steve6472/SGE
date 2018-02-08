@@ -1,10 +1,15 @@
 package com.steve6472.sge.gfx;
 
+import java.io.Serializable;
+
 import com.steve6472.sge.main.BaseGame;
+import com.steve6472.sge.main.Util;
 import com.steve6472.sge.main.game.Vec2;
 
-public class Screen
+public class Screen implements Serializable
 {
+	private static final long serialVersionUID = -5208705383851347246L;
+
 	public int[] pixels;
 	
 	public int width = 0;
@@ -22,6 +27,11 @@ public class Screen
 
 		pixels = new int[width * height];
 	}
+	
+	public static boolean isIgnoredColor(int c)
+	{
+		return c != 0 && c != 0x00ffffff;
+	}
 
 	public static int getColor(int r, int g, int b, int a)
 	{
@@ -32,6 +42,16 @@ public class Screen
 	public static int getColor(int r, int g, int b)
 	{
 		return getColor(r, g, b, 255);
+	}
+	
+	public static int getColor(int gray)
+	{
+		return getColor(gray, gray, gray, 255);
+	}
+	
+	public static int getColor(double gray)
+	{
+		return getColor((int) gray);
 	}
 	
 	public static int getRed(int color)
@@ -183,31 +203,12 @@ public class Screen
 		double r = 0.5d * getRed(c0) + 0.5d * getRed(c1);
 		double g = 0.5d * getGreen(c0) + 0.5d * getGreen(c1);
 		double b = 0.5d * getBlue(c0) + 0.5d * getBlue(c1);
-		double a = getMax(getAlpha(c0), getAlpha(c1));
+		double a = Math.max(getAlpha(c0), getAlpha(c1));
 
 		return getColor((int) r, (int) g, (int) b, (int) a);
 	}
 	
-	private static double getMax(double i, double j)
-	{
-		if (i == j)
-			return j;
-		if (i > j)
-			return i;
-		else
-			return j;
-	}
-	
-//	private static double getMin(double i, double j)
-//	{
-//		if (i == j)
-//			return j;
-//		if (i < j)
-//			return i;
-//		else
-//			return j;
-//	}
-
+/*
 	public void fillRect(double x, double y, double xx, double yy, int c, double maxx, double maxy, double minx, double miny)
 	{
 		for (int i = 0; i < xx; i++)
@@ -234,6 +235,35 @@ public class Screen
 	public void fillRect(double x, double y, double xx, double yy, int c)
 	{
 		fillRect(x, y, xx, yy, c, width, height, 0, 0);
+	}*/
+	
+	
+	/*
+	 * Int variations
+	 */
+
+	public void fillRect(int x, int y, int width, int height, int color, int maxX, int maxY, int minX, int minY)
+	{
+		Util.fillRect(x, y, width, height, maxX, maxY, minX, minY, (X, Y) -> render(X, Y, color));
+	}
+
+	public void fillRect(int x, int y, int width, int height, int color)
+	{
+		fillRect(x, y, width, height, color, this.width, this.height, 0, 0);
+	}
+
+	/*
+	 * Double variations
+	 */
+
+	public void fillRect(double x, double y, double width, double height, int color, double maxX, double maxY, double minX, double minY)
+	{
+		fillRect((int) x, (int) y, (int) width, (int) height, color, (int) maxX, (int) maxY, (int) minX, (int) minY);
+	}
+
+	public void fillRect(double x, double y, double width, double height, int color)
+	{
+		fillRect(x, y, width, height, color, this.width, this.height, 0, 0);
 	}
 	
 	public void drawRect(double x, double y, double w, double h, double thickness, int c)
@@ -268,6 +298,53 @@ public class Screen
 		}
 	}
 
+	public void drawCircle(double x, double y, double radius, double from, double to, double angleOffset, double add, int color)
+	{
+		for (double i = from; i < to; i += add)
+		{
+			double angle = i + angleOffset;
+			double x1 = radius * Math.cos(angle * Math.PI / 180);
+			double y1 = radius * Math.sin(angle * Math.PI / 180);
+			render(x + x1, y + y1, color);
+			
+		}
+	}
+	
+	/**
+	 * Custom created line draw method using sin and cos
+	 * (Prob more laggy than the disabled one)
+	 * Doesn't have clear lines
+	 * 
+	 * @param x1 - starting point X
+	 * @param y1 - starting point Y
+	 * @param x2 - ending point X
+	 * @param y2 - ending point Y
+	 * @param color - color of the line
+	 * @param maxx - limit max X
+	 * @param maxy - limit max Y
+	 * @param minx - limit min X
+	 * @param miny - limit min Y
+	 */
+	public void drawLine(double x1, double y1, double x2, double y2, int color, int maxx, int maxy, int minx, int miny)
+	{
+		int a = (int) (y2 - y1);
+		int b = (int) (x2 - x1);
+		int c = (int) Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
+		
+		double ang = Math.toRadians(Util.countAngle(x1, y1, x2, y2) - 90);
+		
+		double cos = Math.cos(ang);
+		double sin = Math.sin(ang);
+		
+		for (int i = 0; i < c; i++)
+		{
+			double X = x1 + cos * i;
+			double Y = y1 + sin * i;
+			if (!(X < minx || X >= maxx || Y < miny || Y >= maxy))
+				render(X, Y, color);
+		}
+	}
+
 	/**
 	 * @author https://stackoverflow.com/questions/8113629/simplified-bresenhams-line-algorithm-what-does-it-exactly-do
 	 * @param screen
@@ -279,6 +356,9 @@ public class Screen
 	 */
 	public void drawLine(double x1, double y1, double x2, double y2, int color)
 	{
+		drawLine(x1, y1, x2, y2, color, width, height, 0, 0);
+		
+		/*
 		int dx = (int) Math.abs(x2 - x1);
 		int dy = (int) Math.abs(y2 - y1);
 
@@ -286,9 +366,15 @@ public class Screen
 		int sy = (y1 < y2) ? 1 : -1;
 
 		int err = dx - dy;
+		
+		int iterations = 0;
 
 		while (true)
 		{
+			iterations++;
+			if (iterations >= width * height)
+				return;
+			
 			render(x1, y1, color);
 
 			if (x1 == x2 && y1 == y2)
@@ -309,8 +395,51 @@ public class Screen
 				err = err + dx;
 				y1 = y1 + sy;
 			}
-		}
+		}*/
 	}
+	/*
+	public void drawLine(double x1, double y1, double x2, double y2, int color, int maxx, int maxy, int minx, int miny)
+	{
+		int X1 = (int) x1;
+		int Y1 = (int) y1;
+		int X2 = (int) x2;
+		int Y2 = (int) y2;
+		
+		int dx = (int) Math.abs(X2 - X1);
+		int dy = (int) Math.abs(Y2 - Y1);
+
+		int sx = (X1 < X2) ? 1 : -1;
+		int sy = (Y1 < Y2) ? 1 : -1;
+
+		int err = dx - dy;
+
+		while (true)
+		{
+			if ((x1 < minx || x1 >= maxx || y1 < miny || y1 >= maxy))
+				return;
+			
+			render(X1, Y1, color);
+
+			if (X1 == X2 && Y1 == Y2)
+			{
+				break;
+			}
+
+			int e2 = 2 * err;
+
+			if (e2 > -dy)
+			{
+				err = err - dy;
+				X1 = X1 + sx;
+			}
+
+			if (e2 < dx)
+			{
+				err = err + dx;
+				Y1 = Y1 + sy;
+			}
+		}
+	}*/
 
 	public void renderSprite(Sprite sprite, double x, double y)
 	{
@@ -491,7 +620,7 @@ public class Screen
 
 	public void render(double lx, double ly, int c)
 	{
-		if (c != 0 && c != 0x00ffffff)
+		if (isIgnoredColor(c))
 		{
 			int x = (int) lx;
 			int y = (int) ly;
@@ -507,6 +636,8 @@ public class Screen
 				return;
 			int pCol = game.getMain().getPixels()[x + y * width];
 			int alpha = (c >> 24) & 0xff;
+			if (alpha == 0)
+				return;
 			if (alpha == 128)
 				c = blend(c, pCol);
 			game.getMain().setPixel(c, x, y);

@@ -11,8 +11,10 @@ import com.steve6472.sge.gfx.Screen;
 import com.steve6472.sge.gui.Component;
 import com.steve6472.sge.main.BaseGame;
 
-public class Panel3D extends Component
+class Panel3D extends Component
 {
+
+	private static final long serialVersionUID = 4513898073343724293L;
 
 	public Panel3D()
 	{

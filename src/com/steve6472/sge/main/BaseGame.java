@@ -8,11 +8,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.swing.JFrame;
 
 import com.steve6472.sge.gfx.Font;
 import com.steve6472.sge.gfx.Screen;
 import com.steve6472.sge.gui.Gui;
 import com.steve6472.sge.gui.components.ToolTip;
+import com.steve6472.sge.gui.components.panels.CustomPanel;
 import com.steve6472.sge.gui.components.panels.Panel1;
 import com.steve6472.sge.gui.components.panels.Panel2;
 import com.steve6472.sge.gui.components.panels.Panel3;
@@ -77,6 +79,8 @@ public abstract class BaseGame
 		panelList.panels.add(new ButtonPanelHovered(game)); // 11
 		
 		panelList.panels.add(new SliderPanel(game)); // 12
+		
+		panelList.panels.add(new CustomPanel(game)); // 13
 	}
 
 	public void renderGui()
@@ -118,6 +122,20 @@ public abstract class BaseGame
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Experimental method. Can cause problems in unexpected ways.
+	 */
+	@Deprecated
+	protected final void decorateFrame()
+	{
+		JFrame f = getMain().getJFrame();
+		f.dispose();
+		f.setUndecorated(false);
+		f.setVisible(true);
+		f.setResizable(true);
+		getMain().experimentalBlurRender = true;
 	}
 	
 	public abstract void init(final SGEMain main);

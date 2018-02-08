@@ -13,6 +13,7 @@ import com.steve6472.sge.main.game.Vec2;
 
 public class NumberSelector extends Component
 {
+	private static final long serialVersionUID = 6097537167658644896L;
 	int value = 0, max = 16, min = -16, panelType = 8;
 	private List<ChangeEvent> changeEvents = new ArrayList<ChangeEvent>();
 	private boolean enabled = true;
@@ -45,7 +46,7 @@ public class NumberSelector extends Component
 				{
 					if (getKeyHandler().alt.isPressed())
 					{
-						if (getMouseHandler().button == 3)
+						if (getMouseHandler().getButton() == 3)
 							removeValue(1000);
 						else
 							removeValue(100);
@@ -82,7 +83,7 @@ public class NumberSelector extends Component
 				{
 					if (getKeyHandler().alt.isPressed())
 					{
-						if (getMouseHandler().button == 3)
+						if (getMouseHandler().getButton() == 3)
 							addValue(1000);
 						else
 							addValue(100);
@@ -155,7 +156,7 @@ public class NumberSelector extends Component
 	{
 		value += i;
 		if (value > max)
-			value = max;
+			value = min;
 	}
 	
 	public void addChangeEvent(ChangeEvent ce)
@@ -167,7 +168,7 @@ public class NumberSelector extends Component
 	{
 		value -= i;
 		if (value < min)
-			value = min;
+			value = max;
 	}
 
 	public void addValue()

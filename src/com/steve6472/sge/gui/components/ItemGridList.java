@@ -13,6 +13,7 @@ import com.steve6472.sge.main.Util;
 public class ItemGridList extends Component
 {
 	
+	private static final long serialVersionUID = 3003404793344194226L;
 	List<Item> items = new ArrayList<Item>();
 	private List<ChangeEvent> changeEvents = new ArrayList<ChangeEvent>();
 	int fontSize = 1;
@@ -42,7 +43,7 @@ public class ItemGridList extends Component
 				{
 					getGame().panelList.getPanelById(0).render(getX() + i * getWidth(), getY() + j * getHeight(), getWidth(), getHeight());
 
-					screen.renderSprite(items.get((y + scroll)).sprite, getX() + 4 + i * getWidth(),
+					screen.renderSprite(items.get((y + scroll)).sprite, getX() + 2 + i * getWidth(),
 							getY() + j * getHeight() + (getHeight() / 2 - items.get(y + scroll).sprite.getHeight() / 2));
 
 					if (hovered == y)
@@ -55,7 +56,7 @@ public class ItemGridList extends Component
 		}
 
 		//Left "slider"
-		getGame().panelList.getPanelById(8).render(getX() + getWidth() - 40 + visibleItemsX * getWidth(), getY() + 14, 22, getHeight() * visibleItemsY - 14 * 2);
+		getGame().panelList.getPanelById(8).render(getX() + getWidth() - 40 + visibleItemsX * getWidth() + 4, getY() + 14, 22, getHeight() * visibleItemsY - 14 * 2);
 
 		// Up button
 		if (upEnabled && upHovered)
@@ -102,11 +103,15 @@ public class ItemGridList extends Component
 			repaint();
 		}
 		
-		onMouseClicked(upEnabled && upHovered, (c) ->
+		onMouseClicked(upEnabled && upHovered, c ->
 		{
 			scroll -= visibleItemsX;
 			getMouseHandler().mouse_triggered = true;
 			repaint();
+			for (ChangeEvent ce : changeEvents)
+			{
+				ce.change();
+			}
 			repaintBackground();
 		});
 		
@@ -124,11 +129,15 @@ public class ItemGridList extends Component
 			repaint();
 		}
 		
-		onMouseClicked(downHovered && downEnabled, (c) ->
+		onMouseClicked(downHovered && downEnabled, c ->
 		{
 			scroll += visibleItemsX;
 			getMouseHandler().mouse_triggered = true;
 			repaint();
+			for (ChangeEvent ce : changeEvents)
+			{
+				ce.change();
+			}
 			repaintBackground();
 		});
 
@@ -190,6 +199,31 @@ public class ItemGridList extends Component
 		return items.get(index).sprite;
 	}
 	
+	public Item getItem(int index)
+	{
+		return items.get(index);
+	}
+	
+	public Item getSelectedItem()
+	{
+		return items.get(selected);
+	}
+	
+	public void setSelected(int selected)
+	{
+		this.selected = selected;
+	}
+	
+	public void setScroll(int scroll)
+	{
+		this.scroll = scroll;
+	}
+	
+	public int getScroll()
+	{
+		return scroll;
+	}
+	
 	public void addItem(Sprite sprite)
 	{
 		items.add(new Item(sprite != null ? sprite : new Sprite(new int[] {0}, 1, 0)));
@@ -210,6 +244,11 @@ public class ItemGridList extends Component
 			items.remove(index);
 		repaint();
 		repaintBackground();
+	}
+	
+	public void removeAllItems()
+	{
+		items.clear();
 	}
 	
 	public void setFontSize(int size)

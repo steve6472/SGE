@@ -16,6 +16,7 @@ public class Panel1 extends PanelBase
 	}
 
 	public int borderSize = 2;
+	public static int fill = 0xffbfbfbf;
 
 	@Override
 	public void render(int x, int y, int w, int h)
@@ -33,7 +34,7 @@ public class Panel1 extends PanelBase
 		fillRect(x, y + borderSize, borderSize, h - 2 * borderSize, 0xff3f3f3f);
 		
 		//Fill
-		fillRect(x + borderSize, y + borderSize, w - 2 * borderSize, h - 2 * borderSize, 0xffbfbfbf);
+		fillRect(x + borderSize, y + borderSize, w - 2 * borderSize, h - 2 * borderSize, fill);
 	}
 
 }

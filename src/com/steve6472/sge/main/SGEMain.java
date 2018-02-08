@@ -5,9 +5,15 @@ import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
 
@@ -61,6 +67,12 @@ public class SGEMain extends Canvas implements Runnable
 //		defaultCursor = getCursor();
 	}
 	
+	public void setNullCursor()
+	{
+		getJFrame().setCursor(Toolkit.getDefaultToolkit().createCustomCursor(new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "empty"));
+//		defaultCursor = getCursor();
+	}
+	
 	public void recreateFrame(int width, int height)
 	{
 		image = new BufferedImage(game != null ? game.getWidth() > 0 ? game.getWidth() : 32 : 32,
@@ -101,8 +113,13 @@ public class SGEMain extends Canvas implements Runnable
 	
 	public void setPixel(int color, int x, int y)
 	{
-		if (x + y * game.getWidth() > 0 && x + y * game.getWidth() < pixels.length)
+		if (x + y * game.getWidth() >= 0 && x + y * game.getWidth() < pixels.length)
 			pixels[x + y * game.getWidth()] = color;
+	}
+	
+	public void setPixel(int index, int color)
+	{
+		pixels[index] = color;
 	}
 
 	public synchronized void start()
@@ -177,6 +194,10 @@ public class SGEMain extends Canvas implements Runnable
 			}
 		}
 	}
+	
+	public boolean experimentalBlurRender = false;
+	
+	public static List<GraphicsRender> graphicsRender = new ArrayList<GraphicsRender>();
 
 	public void render()
 	{
@@ -188,13 +209,35 @@ public class SGEMain extends Canvas implements Runnable
 		}
 		
 		game.render(this);
+		
+		if (experimentalBlurRender)
+		{
 
-		Graphics g = bs.getDrawGraphics();
+			Graphics2D g = (Graphics2D) bs.getDrawGraphics();
 
-		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+			g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+			g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+			for (GraphicsRender gr : graphicsRender)
+				if (gr != null)
+					gr.render(g);
 
-		g.dispose();
-		bs.show();
+			g.dispose();
+			bs.show();
+		} else
+		{
+			Graphics g = bs.getDrawGraphics();
+
+			g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+			
+			for (GraphicsRender gr : graphicsRender)
+				if (gr != null)
+					gr.render(g);
+
+			g.dispose();
+			bs.show();
+		}
 	}
 
 //	public void init(BaseGame game)

@@ -19,6 +19,7 @@ import com.steve6472.sge.main.BaseGame;
 
 public class HorizontalImageSelector extends Component
 {
+	private static final long serialVersionUID = 5269254274983682816L;
 	List<Sprite> images = new ArrayList<Sprite>();
 	List<Sprite> editedImages = new ArrayList<Sprite>();
 	

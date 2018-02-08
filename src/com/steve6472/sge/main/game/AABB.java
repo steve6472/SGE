@@ -1,10 +1,14 @@
 package com.steve6472.sge.main.game;
 
+import java.awt.Dimension;
+import java.io.Serializable;
+
 import com.steve6472.sge.gfx.Screen;
 import com.steve6472.sge.gfx.Sprite;
 
-public class AABB
+public class AABB implements Serializable
 {
+	private static final long serialVersionUID = 3446849812898348436L;
 	public Vec2 from;
 	public Vec2 to;
 
@@ -37,6 +41,11 @@ public class AABB
 		this.to = new Vec2(loc.getX() + size.height, loc.getY() + size.width);
 	}
 	
+	public AABB(Dimension size)
+	{
+		this(new Vec2(0, 0), size.getWidth(), size.getHeight());
+	}
+
 	public AABB clone()
 	{
 		return new AABB(from, to);
@@ -56,6 +65,12 @@ public class AABB
 	{
 		this.from.move(xa, ya);
 		this.to.move(xa, ya);
+	}
+
+	public void move(Vec2 a)
+	{
+		this.from.move(a.getX(), a.getY());
+		this.to.move(a.getY(), a.getX());
 	}
 
 	public void setPosition(double x0, double y0, double x1, double y1)
@@ -147,6 +162,11 @@ public class AABB
 			return false;
 		return (point.getX() >= from.getX() && point.getX() <= getWidth() + from.getX())
 				&& (point.getY() >= from.getY() && point.getY() <= getHeight() + from.getY());
+	}
+	
+	public boolean isIdentical(AABB ab)
+	{
+		return ab.from.equals(from) && ab.to.equals(to);
 	}
 
 	public double getCenterX()

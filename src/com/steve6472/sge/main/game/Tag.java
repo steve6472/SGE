@@ -1,7 +1,10 @@
 package com.steve6472.sge.main.game;
 
-public class Tag
+import java.io.Serializable;
+
+public class Tag implements Serializable
 {
+	private static final long serialVersionUID = -1131095891329117005L;
 	public String name = null;
 	public Object value = null;
 	
@@ -16,8 +19,22 @@ public class Tag
 		return name;
 	}
 	
+	public void setName(String name)
+	{
+		this.name = name;
+	}
 	
 	protected Object get()
+	{
+		return value;
+	}
+	
+	public void setValue(Object value)
+	{
+		this.value = value;
+	}
+	
+	public Object getValue()
 	{
 		return value;
 	}
@@ -38,6 +55,9 @@ public class Tag
 	
 	public String getString()
 	{
+		if (get() instanceof Integer)
+			return String.valueOf(get());
+		
 		return (String) get();
 	}
 
@@ -52,8 +72,35 @@ public class Tag
 	{
 		if (get() == null)
 			return 0;
+		
+		if (get() instanceof Integer)
+			return (int) get();
+		
 		return new Integer((String) get());
 	}
+	
+	public Tag getTag()
+	{
+		if (get() == null)
+			return null;
+		return (Tag) get();
+	}
+	
+	public Tag[] getTagArray()
+	{
+		if (get() == null)
+			return null;
+		return (Tag[]) get();
+	}
+
+	@Override
+	public String toString()
+	{
+		return "Tag [name=" + name + ", value=" + value + "]";
+	}
+	
+	
+	
 	/*
 		try
 		{

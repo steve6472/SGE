@@ -9,6 +9,7 @@ import com.steve6472.sge.main.BaseGame;
 
 public class RGBPicker extends Component
 {
+	private static final long serialVersionUID = -8370628005875490835L;
 	private Slider red, green, blue;
 	private Panel back;
 	

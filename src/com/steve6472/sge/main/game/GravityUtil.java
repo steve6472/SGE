@@ -12,7 +12,7 @@ public class GravityUtil
 	/**
 	 * m/s^2
 	 */
-	public static final double NORMAL_GRAVITY = 9.806_65;
+	public static final double NORMAL_GRAVITY = 9.80665;
 	
 	public static double getVel(double gravity, double time)
 	{

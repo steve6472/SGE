@@ -1,11 +1,14 @@
 package com.steve6472.sge.gfx;
 
+import java.io.Serializable;
+
 import com.steve6472.sge.main.BaseGame;
 import com.steve6472.sge.main.game.AABB;
 import com.steve6472.sge.main.game.Vec2;
 
-public class Font
+public class Font implements Serializable
 {
+	private static final long serialVersionUID = 8177570202100046359L;
 	BaseGame game;
 	
 	public Font(BaseGame game)
@@ -14,7 +17,7 @@ public class Font
 	}
 	// 32 spaces: "                                ";
 	// 64 Chars per line
-	public static final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ&♥|█  abcdefghijklmnopqrstuvwxyz      " + "0123456789.,:;'\"!?$%()-=+/><_#§\\                              ";
+	public static final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ&♥|█* abcdefghijklmnopqrstuvwxyz      " + "0123456789.,:;'\"!?$%()-=+/><_#§\\@                             ";
 	public static final String galactic_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ><.                                   " + "0123456789";
 	public static final String special = "0123456789AB&_♥C                                                ";
 
@@ -22,8 +25,8 @@ public class Font
 	 * One line text
 	 */
 	
-	static int WHITE = 0xffffffff;
-	static int SHADOW = 0xff383838;
+	public static final int WHITE = 0xffffffff;
+	public static final int SHADOW = 0xff383838;
 
 	public void render(String msg, Screen screen, int x, int y, int scale)
 	{
@@ -35,7 +38,7 @@ public class Font
 	public void renderColoredWithShadow(String msg, Screen screen, int x, int y, int scale, int colorToReplace, int color)
 	{
 		if (game.fontShadow())
-			renderColored(msg, screen, chars, x + (1 * scale), y + (1 * scale), scale, 2, WHITE, SHADOW);
+			renderColored(msg, screen, chars, x + (1 * scale), y + (1 * scale), scale, 2, WHITE, darkColor(color, 0.2f));
 		renderColoredFont(chars, x, y, scale, 2, colorToReplace, color, msg, screen);
 	}
 
@@ -97,6 +100,83 @@ public class Font
 	public void renderDarkArray(Screen screen, int x, int y, int scale, String... msg)
 	{
 		renderFontArray(chars, x, y, scale, screen, 5, msg);
+	}
+	
+	//TODO: Remove screen parameter from ALL methods. Use BaseGame's screen!
+	
+	/**
+	 * 
+	 * @param text
+	 * @param screen
+	 * @param x
+	 * @param y
+	 * @param scale
+	 * @param colorIndexes Ex.&2, @code{0xff00ff00}, &5,@code{0xffff0000};
+	 * Sets of 2 parameters - index & color
+	 */
+	public void renderIndexedColors(String msg, Screen screen, int x, int y, int scale, Object...colorIndexes)
+	{
+		if (msg == null)
+			return;
+		
+		if (!game.smallFont())
+			msg = msg.toUpperCase();
+		
+		int color = WHITE;
+		
+		int ignore = 0;
+		
+		int totalIgnore = 0;
+
+		for (int i = 0; i < msg.length(); i++)
+		{
+			int char_index = chars.indexOf(msg.charAt(i));
+			
+			int colorIndex = 0;
+			
+			if (colorIndexes != null)
+			for (Object o : colorIndexes)
+			{
+				if (o instanceof String)
+				{
+					String st = (String) o;
+					if (msg.length() > i + st.length())
+					{
+						String indexedText = msg.substring(i, i + st.length());
+						if (st.equals(indexedText))
+						{
+							Object obj = colorIndexes[colorIndex + 1];
+							if (obj instanceof Integer)
+							{
+								color = (Integer) obj;
+								ignore = st.length();
+								totalIgnore += st.length();
+							}
+						}
+					}
+				}
+				colorIndex++;
+			}
+			
+			if (char_index >= 0)
+			{
+				if (ignore == 0)
+				{
+					if (game.smallFont())
+						screen.render(x + (i * scale * 8 - (totalIgnore * 8 * scale)) + scale, y + scale, (char_index + 2 * 64), scale, WHITE, darkColor(color, 0.2f));
+					screen.render(x + (i * scale * 8 - (totalIgnore * 8 * scale)), y, (char_index + 2 * 64), scale, WHITE, color);
+				} else
+				{
+					ignore--;
+				}
+			}
+		}
+	}
+
+	public static int darkColor(int color, float factor)
+	{
+		return Screen.getColor((int) (Screen.getRed(color) * factor), (int) (Screen.getGreen(color) * factor),
+				(int) (Screen.getBlue(color) * factor));
 	}
 
 	/*

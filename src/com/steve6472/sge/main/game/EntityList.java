@@ -7,14 +7,16 @@
 
 package com.steve6472.sge.main.game;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.steve6472.sge.gfx.Sprite;
 import com.steve6472.sge.main.BaseGame;
 
-public class EntityList
+public class EntityList implements Serializable
 {
+	private static final long serialVersionUID = 6609428400048323323L;
 	private final List<Class<? extends BaseEntity>> entities = new ArrayList<Class<? extends BaseEntity>>();
 	private final List<Sprite> entitySprites = new ArrayList<Sprite>();
 	private BaseGame game = null;

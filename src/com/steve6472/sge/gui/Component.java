@@ -1,5 +1,6 @@
 package com.steve6472.sge.gui;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,9 +12,10 @@ import com.steve6472.sge.main.BaseGame;
 import com.steve6472.sge.main.KeyHandler;
 import com.steve6472.sge.main.MouseHandler;
 
-public abstract class Component extends LambdaControl
+public abstract class Component extends LambdaControl implements Serializable
 {
 
+	private static final long serialVersionUID = 62938822794527605L;
 	private boolean isVisible = true;
 	protected boolean shouldRepaint = false;
 	public ToolTip toolTip;
@@ -79,15 +81,15 @@ public abstract class Component extends LambdaControl
 	{
 		if (!isVisible())
 			return false;
-		return (mouseHandler.mouse_x >= x && mouseHandler.mouse_x <= w + x) && (mouseHandler.mouse_y >= y && mouseHandler.mouse_y <= h + y);
+		return (mouseHandler.getMouseX() >= x && mouseHandler.getMouseX() <= w + x) && (mouseHandler.getMouseY() >= y && mouseHandler.getMouseY() <= h + y);
 	}
 
 	public boolean isCursorInComponent()
 	{
 		if (!isVisible())
 			return false;
-		return (mouseHandler.mouse_x >= getX() && mouseHandler.mouse_x <= getWidth() + getX())
-				&& (mouseHandler.mouse_y >= getY() && mouseHandler.mouse_y <= getHeight() + getY());
+		return (mouseHandler.getMouseX() >= getX() && mouseHandler.getMouseX() <= getWidth() + getX())
+				&& (mouseHandler.getMouseY() >= getY() && mouseHandler.getMouseY() <= getHeight() + getY());
 	}
 
 	private short idleMouseTime = 0;
@@ -108,8 +110,8 @@ public abstract class Component extends LambdaControl
 		{
 			boolean hovering = isCursorInComponent(x, y, width, height);
 
-			int currentMousePosX = m.mouse_x;
-			int currentMousePosY = m.mouse_y;
+			int currentMousePosX = m.getMouseX();
+			int currentMousePosY = m.getMouseY();
 
 			
 			//Check if mouse has moved

@@ -1,13 +1,15 @@
 package com.steve6472.sge.main.game;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.steve6472.sge.gfx.Screen;
 import com.steve6472.sge.gfx.Sprite;
 
-public class Blur
+public class Blur implements Serializable
 {
+	private static final long serialVersionUID = 210013109000097622L;
 	List<Vec2> blur = new ArrayList<Vec2>();
 	private final int blurSize;
 	private final int[] blurLoc;
