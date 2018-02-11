@@ -42,7 +42,7 @@ public class NumberSelector extends Component
 					repaint();
 					renderedRemove = true;
 				}
-				if (getMouseHandler().mouse_hold && !getMouseHandler().mouse_triggered)
+				if (getMouseHandler().mouseHold && !getMouseHandler().mouseTriggered)
 				{
 					if (getKeyHandler().alt.isPressed())
 					{
@@ -64,7 +64,7 @@ public class NumberSelector extends Component
 					{
 						ce.change();
 					}
-					getMouseHandler().mouse_triggered = true;
+					getMouseHandler().mouseTriggered = true;
 				}
 			} else
 			{
@@ -79,7 +79,7 @@ public class NumberSelector extends Component
 					repaint();
 					renderedAdd = true;
 				}
-				if (getMouseHandler().mouse_hold && !getMouseHandler().mouse_triggered)
+				if (getMouseHandler().mouseHold && !getMouseHandler().mouseTriggered)
 				{
 					if (getKeyHandler().alt.isPressed())
 					{
@@ -101,7 +101,7 @@ public class NumberSelector extends Component
 					{
 						ce.change();
 					}
-					getMouseHandler().mouse_triggered = true;
+					getMouseHandler().mouseTriggered = true;
 				}
 			} else
 			{

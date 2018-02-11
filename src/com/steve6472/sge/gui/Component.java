@@ -281,10 +281,19 @@ public abstract class Component extends LambdaControl implements Serializable
 		repaintBackground();
 	}
 	
+	int oldX, oldY;
+	
 	public void setLocation(int x, int y)
 	{
 		this.x = x;
 		this.y = y;
+		
+		if (x != oldX)
+		{
+			oldX = x;
+			repaint();
+			repaintBackground();
+		}
 		
 		for (Component gc : components)
 		{

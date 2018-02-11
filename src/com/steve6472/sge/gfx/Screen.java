@@ -280,6 +280,21 @@ public class Screen implements Serializable
 		// LU-DL
 		fillRect(x, y + thickness, thickness, h - 2 * thickness, c);
 	}
+	
+	public void drawRect(double x, double y, double w, double h, double thickness, int c, double maxX, double maxY, double minX, double minY)
+	{
+		if (thickness == 0)
+			return;
+
+		// LU - RU
+		fillRect(x, y, w, thickness, c, maxX, maxY, minX, minY);
+		// RU-DR
+		fillRect(x + w - thickness, y + thickness, thickness, h - 2 * thickness, c, maxX, maxY, minX, minY);
+		// LD-DR
+		fillRect(x, y + h - thickness, w, thickness, c, maxX, maxY, minX, minY);
+		// LU-DL
+		fillRect(x, y + thickness, thickness, h - 2 * thickness, c, maxX, maxY, minX, minY);
+	}
 
 	public void drawCircle(double x, double y, double radius, int color)
 	{

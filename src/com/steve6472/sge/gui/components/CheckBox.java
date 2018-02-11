@@ -59,10 +59,10 @@ public class CheckBox extends Component
 			hoverRepainted = false;
 		}
 		
-		if (isHovered && getMouseHandler().mouse_hold && !getMouseHandler().mouse_triggered && isEnabled())
+		if (isHovered && getMouseHandler().mouseHold && !getMouseHandler().mouseTriggered && isEnabled())
 		{
 			toggle();
-			getMouseHandler().mouse_triggered = true;
+			getMouseHandler().mouseTriggered = true;
 			repaint();
 		}
 

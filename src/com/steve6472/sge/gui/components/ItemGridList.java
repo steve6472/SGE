@@ -106,7 +106,7 @@ public class ItemGridList extends Component
 		onMouseClicked(upEnabled && upHovered, c ->
 		{
 			scroll -= visibleItemsX;
-			getMouseHandler().mouse_triggered = true;
+			getMouseHandler().mouseTriggered = true;
 			repaint();
 			for (ChangeEvent ce : changeEvents)
 			{
@@ -132,7 +132,7 @@ public class ItemGridList extends Component
 		onMouseClicked(downHovered && downEnabled, c ->
 		{
 			scroll += visibleItemsX;
-			getMouseHandler().mouse_triggered = true;
+			getMouseHandler().mouseTriggered = true;
 			repaint();
 			for (ChangeEvent ce : changeEvents)
 			{

@@ -52,6 +52,9 @@ public class ValueHolder implements Serializable
 		if (get() instanceof Integer)
 			return String.valueOf(get());
 		
+		if (get() instanceof Double)
+			return String.valueOf(get());
+		
 		return (String) get();
 	}
 

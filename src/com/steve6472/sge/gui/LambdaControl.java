@@ -33,7 +33,7 @@ public class LambdaControl
 		if (c.isCursorInComponent())
 		{
 			boolean holded = false;
-			if (c.getMouseHandler().mouse_hold)
+			if (c.getMouseHandler().isMouseHolded())
 			{
 				holdIt = true;
 			} else
@@ -62,7 +62,7 @@ public class LambdaControl
 		if (canRun)
 		{
 			boolean holded = false;
-			if (c.getMouseHandler().mouse_hold)
+			if (c.getMouseHandler().isMouseHolded())
 			{
 				holdIt = true;
 			} else
@@ -90,7 +90,7 @@ public class LambdaControl
 		Objects.requireNonNull(action);
 		if (c.isCursorInComponent())
 		{
-			if (c.getMouseHandler().mouse_hold)
+			if (c.getMouseHandler().isMouseHolded())
 			{
 				action.accept(c);
 			}
@@ -106,7 +106,7 @@ public class LambdaControl
 		Objects.requireNonNull(action);
 		if (canRun)
 		{
-			if (c.getMouseHandler().mouse_hold)
+			if (c.getMouseHandler().isMouseHolded())
 			{
 				action.accept(c);
 			}

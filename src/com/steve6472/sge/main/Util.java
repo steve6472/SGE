@@ -324,7 +324,7 @@ public class Util
 		return (number >= min && number <= max);
 	}
 	
-	public static int getColorFromHex(String hex)
+	public static int getIntFromHex(String hex)
 	{
 		return (int) Long.parseLong(hex, 16);
 	}

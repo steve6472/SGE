@@ -53,15 +53,15 @@ public class DragFrame extends Component
 //		frame.setLocationRelativeTo(null);
 		if (isCursorInComponent())
 		{
-			if (getMouseHandler().mouse_hold && !getMouseHandler().mouse_triggered)
+			if (getMouseHandler().mouseHold && !getMouseHandler().mouseTriggered)
 			{
 				lastX = getMouseHandler().getPressedMouseXOnScreen();
 				lastY = getMouseHandler().getPressedMouseYOnScreen();
-				getMouseHandler().mouse_triggered = true;
+				getMouseHandler().mouseTriggered = true;
 				b = true;
 			}
 		}
-		if (getMouseHandler().mouse_hold && b)
+		if (getMouseHandler().mouseHold && b)
 		{
 			int x = getMouseHandler().getMouseXOnScreen();
 			int y = getMouseHandler().getMouseYOnScreen();
@@ -122,7 +122,7 @@ public class DragFrame extends Component
 				//}
 			}
 		}
-		if (!b || !getMouseHandler().mouse_hold)
+		if (!b || !getMouseHandler().mouseHold)
 		{
 			b = false;
 		}

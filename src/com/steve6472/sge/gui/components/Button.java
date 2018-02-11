@@ -78,7 +78,7 @@ public class Button extends Component implements IFocusable
 			
 			if (isHovered)
 			{
-				if (getMouseHandler().mouse_hold)
+				if (getMouseHandler().mouseHold)
 				{
 					for (ButtonEvents e : events)
 					{

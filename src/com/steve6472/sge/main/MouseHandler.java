@@ -26,11 +26,15 @@ public class MouseHandler implements Serializable
 	public int pressedMouseX = 0;
 	@Deprecated
 	public int pressedMouseY = 0;
-	public boolean mouse_hold = false;
-	public boolean mouse_triggered = false;
+	@Deprecated
+	/**
+	 * Setted to false when released
+	 */
+	public boolean mouseHold = false;
+	@Deprecated
+	public boolean mouseTriggered = false;
 	@Deprecated
 	public int button = 0;
-	private boolean triggeredPress = false;
 	SGEMain main;
 
 	public MouseHandler(SGEMain game)
@@ -41,7 +45,7 @@ public class MouseHandler implements Serializable
 			@Override
 			public void mousePressed(MouseEvent e)
 			{
-				mouse_hold = true;
+				mouseHold = true;
 				mouseX = e.getX();
 				mouseY = e.getY();
 				pressedMouseX = e.getX();
@@ -56,9 +60,8 @@ public class MouseHandler implements Serializable
 			@Override
 			public void mouseReleased(MouseEvent e)
 			{
-				mouse_hold = false;
-				mouse_triggered = false;
-				triggeredPress = false;
+				mouseHold = false;
+				mouseTriggered = false;
 				mouseX = e.getX();
 				mouseY = e.getY();
 				button = 0;
@@ -79,7 +82,7 @@ public class MouseHandler implements Serializable
 			@Override
 			public void mouseDragged(MouseEvent e)
 			{
-				mouse_hold = true;
+				mouseHold = true;
 				mouseX = e.getX();
 				mouseY = e.getY();
 				mouseXOnScreen = e.getXOnScreen();
@@ -88,19 +91,6 @@ public class MouseHandler implements Serializable
 		});
 	}
 	
-	/**
-	 * 
-	 * @return true when user presses any mouse button. (Calls only once)
-	 */
-	public boolean mouseClicked()
-	{
-		if (!triggeredPress)
-		{
-			triggeredPress = true;
-			return true;
-		}
-		return false;
-	}
 	
 	public int getMouseX()
 	{
@@ -150,6 +140,57 @@ public class MouseHandler implements Serializable
 	public int getPressedMouseYOnScreen()
 	{
 		return pressedMouseYOnScreen;
+	}
+	
+	public boolean isMouseHolded()
+	{
+		return mouseHold;
+	}
+	
+	public boolean isMouseTriggered()
+	{
+		return mouseTriggered;
+	}
+	
+	public void trigger()
+	{
+		mouseTriggered = false;
+	}
+	
+	public void toggleTrigger()
+	{
+		mouseTriggered = !mouseTriggered;
+	}
+	
+	public void setTrigger(boolean triggered)
+	{
+		mouseTriggered = triggered;
+	}
+	
+	public boolean mousePressed(int mouseButton)
+	{
+		if (isMouseHolded() && !isMouseTriggered() && getButton() == mouseButton)
+		{
+			mouseTriggered = true;
+			
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * 
+	 * @return true when user presses any mouse button. (Calls only once)
+	 */
+	public boolean mousePressed()
+	{
+		if (isMouseHolded() && !isMouseTriggered())
+		{
+			mouseTriggered = true;
+			
+			return true;
+		}
+		return false;
 	}
 	
 	public Vec2 toVec()

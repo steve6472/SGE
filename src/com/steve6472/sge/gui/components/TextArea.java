@@ -199,10 +199,10 @@ public class TextArea extends Component implements IFocusable
 	{
 		if (!isVisible())
 			return;
-		if (isCursorInComponent() && getMouseHandler().mouse_hold)
+		if (isCursorInComponent() && getMouseHandler().mouseHold)
 			isFocused = true;
 		
-		if (!isCursorInComponent() && getMouseHandler().mouse_hold)
+		if (!isCursorInComponent() && getMouseHandler().mouseHold)
 			isFocused = false;
 
 		carretTick += Math.max(60d / Math.max(getGame().getFPS(), 1), 1);

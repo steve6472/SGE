@@ -36,7 +36,7 @@ public enum DataType
 		case FLOAT:
 			return new Float(value);
 		case HEX:
-			return Util.getColorFromHex(value);
+			return Util.getIntFromHex(value);
 		case INT:
 			return new Integer(value);
 		case LONG:

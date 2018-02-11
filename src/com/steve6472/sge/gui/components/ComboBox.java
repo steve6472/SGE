@@ -354,13 +354,13 @@ class ComboBoxButton extends Button
 		{
 			if (isCursorInComponent(x, y, width, height))
 			{
-				if (getMouseHandler().mouse_hold && !getMouseHandler().mouse_triggered)
+				if (getMouseHandler().mouseHold && !getMouseHandler().mouseTriggered)
 				{
 					for (ButtonEvents e : events)
 					{
 						e.click();
 					}
-					getMouseHandler().mouse_triggered = true;
+					getMouseHandler().mouseTriggered = true;
 				}
 				hovered_ = true;
 				return;

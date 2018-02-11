@@ -102,7 +102,7 @@ public class ItemList extends Component
 		onMouseClicked(upEnabled && upHovered, (c) ->
 		{
 			scroll--;
-			getMouseHandler().mouse_triggered = true;
+			getMouseHandler().setTrigger(true);
 			repaint();
 			if (parentComponent == null)
 				repaintBackground();
@@ -127,7 +127,7 @@ public class ItemList extends Component
 		onMouseClicked(downHovered && downEnabled, (c) ->
 		{
 			scroll++;
-			getMouseHandler().mouse_triggered = true;
+			getMouseHandler().setTrigger(true);
 			repaint();
 			if (parentComponent == null)
 				repaintBackground();
