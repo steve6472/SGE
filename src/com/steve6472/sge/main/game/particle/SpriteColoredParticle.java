@@ -12,6 +12,7 @@ import com.steve6472.sge.gfx.Screen;
 
 public class SpriteColoredParticle extends AngledParticle
 {
+	private static final long serialVersionUID = 1324443855475302800L;
 	public static final AnimatedSprite sprite = new AnimatedSprite("particle_01.png", 9);
 	
 	static

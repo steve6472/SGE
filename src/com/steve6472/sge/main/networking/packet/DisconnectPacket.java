@@ -7,7 +7,7 @@
 
 package com.steve6472.sge.main.networking.packet;
 
-public class DisconnectPacket extends Packet
+public class DisconnectPacket extends Packet<IPacketHandler>
 {
 
 	public DisconnectPacket()
@@ -25,9 +25,7 @@ public class DisconnectPacket extends Packet
 	}
 
 	@Override
-	protected int getSize()
+	public void handlePacket(IPacketHandler handler)
 	{
-		return 0;
 	}
-
 }

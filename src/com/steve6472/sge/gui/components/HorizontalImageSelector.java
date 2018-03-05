@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 
 import com.steve6472.sge.gfx.Screen;
 import com.steve6472.sge.gfx.Sprite;
+import com.steve6472.sge.gfx.SpriteUtils;
 import com.steve6472.sge.gui.Component;
 import com.steve6472.sge.gui.components.events.ButtonEvents;
 import com.steve6472.sge.gui.components.panels.Panel1;
@@ -39,9 +40,9 @@ public class HorizontalImageSelector extends Component
 		panel = new Panel1(game.getScreen());
 		
 		left = new Button();
-		left.setEnabledImage(Sprite.multiplySize(ArrowTextures.arrowLeft, 2));
-		left.setHoveredImage(Sprite.multiplySize(ArrowTextures.arrowLeftHovered, 2));
-		left.setDisabledImage(Sprite.multiplySize(ArrowTextures.arrowLeftDisabled, 2));
+		left.setEnabledImage(SpriteUtils.multiplySize(ArrowTextures.arrowLeft, 2));
+		left.setHoveredImage(SpriteUtils.multiplySize(ArrowTextures.arrowLeftHovered, 2));
+		left.setDisabledImage(SpriteUtils.multiplySize(ArrowTextures.arrowLeftDisabled, 2));
 		left.setSize(32, getHeight());
 		left.setImageOffset(2, 13);
 		left.disable();
@@ -59,9 +60,9 @@ public class HorizontalImageSelector extends Component
 		addComponent(left);
 		
 		right = new Button();
-		right.setEnabledImage(Sprite.multiplySize(ArrowTextures.arrowRight, 2));
-		right.setHoveredImage(Sprite.multiplySize(ArrowTextures.arrowRightHovered, 2));
-		right.setDisabledImage(Sprite.multiplySize(ArrowTextures.arrowRightDisabled, 2));
+		right.setEnabledImage(SpriteUtils.multiplySize(ArrowTextures.arrowRight, 2));
+		right.setHoveredImage(SpriteUtils.multiplySize(ArrowTextures.arrowRightHovered, 2));
+		right.setDisabledImage(SpriteUtils.multiplySize(ArrowTextures.arrowRightDisabled, 2));
 		right.setSize(32, getHeight());
 		right.setImageOffset(2, 13);
 		right.addEvent(new ButtonEvents()
@@ -139,7 +140,7 @@ public class HorizontalImageSelector extends Component
 	public void addSprite(Sprite sprite)
 	{
 		images.add(sprite);
-		editedImages.add(Sprite.multiplySize(sprite, getImageMaxSizeMulti(sprite)));
+		editedImages.add(SpriteUtils.multiplySize(sprite, getImageMaxSizeMulti(sprite)));
 	}
 	
 	public void addSprites(File...files)
@@ -162,8 +163,8 @@ public class HorizontalImageSelector extends Component
 		int loop = 0;
 		for (;;)
 		{
-			int w = Sprite.multiplySize(s, lastWhatever).getWidth();
-			int h = Sprite.multiplySize(s, lastWhatever).getHeight();
+			int w = SpriteUtils.multiplySize(s, lastWhatever).getWidth();
+			int h = SpriteUtils.multiplySize(s, lastWhatever).getHeight();
 			if (w > getHeight() - 8 - 4 || h > getHeight() - 8 - 4)
 			{
 				break;

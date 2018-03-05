@@ -8,16 +8,18 @@
 package com.steve6472.sge.main.game.particle;
 
 import com.steve6472.sge.gfx.Sprite;
+import com.steve6472.sge.gfx.SpriteUtils;
 import com.steve6472.sge.main.Util;
 
 public class SparkParticle extends ColorChangingParticle
 {
 	
+	private static final long serialVersionUID = 8073868729349138540L;
 	static final Sprite spark = new Sprite("spark.png");
 
 	public SparkParticle(double x, double y, int life)
 	{
-		super(x, y, getAng(), life, Sprite.rotate(spark, (int) getAng()), 0xff895F15, life - 5);
+		super(x, y, getAng(), life, SpriteUtils.rotate(spark, (int) getAng()), 0xff895F15, life - 5);
 		a = -1;
 		setSpeed(1.5);
 	}

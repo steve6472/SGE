@@ -24,6 +24,8 @@ public abstract class Gui implements Serializable
 	 * If true it will render components last
 	 */
 	private boolean switchedRender = false;
+	
+	private boolean firstHide = false;
 
 	public Gui(BaseGame game)
 	{
@@ -42,6 +44,8 @@ public abstract class Gui implements Serializable
 	public abstract void render(Screen screen);
 
 	public void showEvent() {};
+
+	public void hideEvent() {};
 	
 	protected void renderComponents(Screen screen)
 	{
@@ -138,6 +142,14 @@ public abstract class Gui implements Serializable
 		for (Component gc : components)
 		{
 			gc.hide();
+		}
+		
+		if (!firstHide)
+		{
+			firstHide = true;
+		} else
+		{
+			hideEvent();
 		}
 	}
 	

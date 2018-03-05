@@ -54,14 +54,14 @@ public class AnimatedSprite extends Sprite implements Cloneable
 
 	public void multiplySize(int m)
 	{
-		Sprite.multiplySize(this, m);
+		SpriteUtils.multiplySize(this, m);
 	}
 
 	public Sprite getFrame(int frame)
 	{
 		if (frame >= getFrames())
-			return Sprite.cut(this.height * (getFrames() - 1), 0, this.height, this.height, this);
-		return Sprite.cut(this.height * frame, 0, this.height, this.height, this);
+			return SpriteUtils.cut(this.getHeight() * (getFrames() - 1), 0, this.getHeight(), this.getHeight(), this);
+		return SpriteUtils.cut(this.getHeight() * frame, 0, this.getHeight(), this.getHeight(), this);
 	}
 	
 	public Sprite getCurrentFrame()
@@ -71,7 +71,7 @@ public class AnimatedSprite extends Sprite implements Cloneable
 	
 	public void render(Screen screen, double x, double y, int frame)
 	{
-		screen.renderSprite(this, x, y, this.height, frame, 0);
+		screen.renderSprite(this, x, y, this.getHeight(), frame, 0);
 	}
 	
 	public int getCurrentFrameIndex()
@@ -109,25 +109,6 @@ public class AnimatedSprite extends Sprite implements Cloneable
 	public int getFrames()
 	{
 		return frames;
-	}
-	
-	@Override
-	public AnimatedSprite clone() throws CloneNotSupportedException
-	{
-		return (AnimatedSprite) super.clone();
-	}
-	
-	public AnimatedSprite safeClone()
-	{
-		AnimatedSprite as = null;
-		try
-		{
-			as = clone();
-		} catch (CloneNotSupportedException e)
-		{
-			e.printStackTrace();
-		}
-		return as;
 	}
 
 }

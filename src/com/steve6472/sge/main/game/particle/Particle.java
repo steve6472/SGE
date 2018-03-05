@@ -1,14 +1,17 @@
 package com.steve6472.sge.main.game.particle;
 
+import java.io.Serializable;
+
 import com.steve6472.sge.gfx.Screen;
 import com.steve6472.sge.gfx.Sprite;
+import com.steve6472.sge.gfx.SpriteUtils;
 import com.steve6472.sge.main.game.IObject;
 import com.steve6472.sge.main.game.Killable;
 import com.steve6472.sge.main.game.Vec2;
 
-public class Particle extends Killable implements IObject, Cloneable
+public class Particle extends Killable implements IObject, Cloneable, Serializable
 {
-
+	private static final long serialVersionUID = -2616195696649782107L;
 	protected Vec2 pos;
 	protected double dx;
 	protected double dy;
@@ -24,7 +27,7 @@ public class Particle extends Killable implements IObject, Cloneable
 		this.dy = dy;
 		this.life = life;
 		this.size = size;
-		texture = new Sprite(size, size).fill(c);
+		texture = SpriteUtils.fill(new Sprite(size, size), c);
 	}
 
 	public Particle setSpeed(double speed)
@@ -35,7 +38,7 @@ public class Particle extends Killable implements IObject, Cloneable
 
 	public Particle setColor(int c)
 	{
-		texture.fill(c);
+		SpriteUtils.fill(texture, c);
 		return this;
 	}
 

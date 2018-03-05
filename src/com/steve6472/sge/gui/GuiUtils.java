@@ -53,7 +53,7 @@ public class GuiUtils
 	public static Button createMinimalizeButton(Gui gui)
 	{
 		Button minimalize = new Button("_");
-		minimalize.setLocation(gui.getGame().getWidth() - 80, 0);
+		minimalize.setLocation(gui.getGame().getWidth() - 82, 0);
 		minimalize.setSize(40, 25);
 		minimalize.addEvent(new ButtonEvents()
 		{

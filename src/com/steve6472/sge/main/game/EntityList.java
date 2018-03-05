@@ -65,7 +65,7 @@ public class EntityList implements Serializable
 		return getEntity(getLastName(clazz));
 	}
 
-	public String getLastName(Class<?> clazz) { return clazz.getName().split("\\.")[clazz.getName().split("\\.").length - 1]; }
+	public String getLastName(Class<?> clazz) { return clazz.getSimpleName(); }
 
 	public final List<Class<? extends BaseEntity>> getEntities() { return entities; }
 

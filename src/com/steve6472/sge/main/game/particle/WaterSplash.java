@@ -12,6 +12,7 @@ import com.steve6472.sge.main.game.GravityUtil;
 
 public class WaterSplash extends Particle
 {
+	private static final long serialVersionUID = 7805127716952171146L;
 	double f = 0;
 	double time = 0;
 	

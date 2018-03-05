@@ -12,6 +12,7 @@ import com.steve6472.sge.main.game.GravityUtil;
 
 public class GravityParticle extends Particle
 {
+	private static final long serialVersionUID = 6797574605808154666L;
 	double f = 0;
 	double time = 0;
 

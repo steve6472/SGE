@@ -38,7 +38,7 @@ public class AABB implements Serializable
 	public AABB (Vec2 loc, Sprite size)
 	{
 		this.from = loc.clone();
-		this.to = new Vec2(loc.getX() + size.height, loc.getY() + size.width);
+		this.to = new Vec2(loc.getX() + size.getHeight(), loc.getY() + size.getWidth());
 	}
 	
 	public AABB(Dimension size)

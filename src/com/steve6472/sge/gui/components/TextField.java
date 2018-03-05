@@ -18,10 +18,10 @@ public class TextField extends Component implements IFocusable
 	private static final long serialVersionUID = 2170809387637383724L;
 	boolean isFocused = false;
 	private String text = "";
-	int carretPosition = 0;
 	private int fontSize = 1;
-	private double carretTick = 0;
 	private int maxCharacters = Short.MAX_VALUE;
+	int carretPosition = 0;
+	private double carretTick = 0;
 	private boolean showCarret = false;
 	private boolean isEnabled = true;
 	private boolean centeredRender = true;

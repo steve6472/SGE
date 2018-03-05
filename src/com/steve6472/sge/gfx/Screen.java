@@ -49,9 +49,24 @@ public class Screen implements Serializable
 		return getColor(gray, gray, gray, 255);
 	}
 	
+	public static int getColor(int gray, float red, float green, float blue)
+	{
+		return getColor((int) (gray * red), (int) (gray * green), (int) (gray * blue));
+	}
+	
+	public static int getColor(int gray, float red, float green, float blue, boolean halfTransparent)
+	{
+		return getColor((int) (gray * red), (int) (gray * green), (int) (gray * blue), halfTransparent ? 0x80 : 0xff);
+	}
+	
 	public static int getColor(double gray)
 	{
 		return getColor((int) gray);
+	}
+	
+	public static float[] getColors(int color)
+	{
+		return new float[] { (float) getRed(color) / 255f, (float) getGreen(color) / 255f, (float) getBlue(color) / 255f, (float) getAlpha(color) / 255f };
 	}
 	
 	public static int getRed(int color)
@@ -82,14 +97,14 @@ public class Screen implements Serializable
 		int scale_map = scale -1;
 		int x_tile = tile % 64;
 		int y_tile = tile / 64;
-		int tile_offset = (x_tile << 3) + (y_tile << 3) * sheet.width;
+		int tile_offset = (x_tile << 3) + (y_tile << 3) * sheet.getWidth();
 		for (int y = 0; y < 8; y++)
 		{
 			int y_pixel = y + y_pos + (y * scale_map) - ((scale_map << 3) / 2);
 			for (int x = 0; x < 8; x++)
 			{
 				int x_pixel = x + x_pos + (x * scale_map) - ((scale_map << 3) / 2);
-				int c = (sheet.pixels[x + y * sheet.width + tile_offset]);
+				int c = (sheet.pixels[x + y * sheet.getWidth() + tile_offset]);
 				if (c < 0)
 				{
 					for (int y_scale = 0; y_scale < scale; y_scale++)
@@ -116,14 +131,14 @@ public class Screen implements Serializable
 		int scale_map = scale -1;
 		int x_tile = tile % 64;
 		int y_tile = tile / 64;
-		int tile_offset = (x_tile << 3) + (y_tile << 3) * sheet.width;
+		int tile_offset = (x_tile << 3) + (y_tile << 3) * sheet.getWidth();
 		for (int y = 0; y < 8; y++)
 		{
 			int y_pixel = y + y_pos + (y * scale_map) - ((scale_map << 3) / 2);
 			for (int x = 0; x < 8; x++)
 			{
 				int x_pixel = x + x_pos + (x * scale_map) - ((scale_map << 3) / 2);
-				int c = (sheet.pixels[x + y * sheet.width + tile_offset]);
+				int c = (sheet.pixels[x + y * sheet.getWidth() + tile_offset]);
 				if (c < 0)
 				{
 					for (int y_scale = 0; y_scale < scale; y_scale++)
@@ -144,50 +159,73 @@ public class Screen implements Serializable
 		}
 	}
 
-	public void renderSprite(Sprite sprite, int x, int y, int maxx, int maxy, int minx, int miny)
+	public void renderSprite(Sprite sprite, int x, int y, int maxX, int maxY, int minX, int minY)
 	{
 		if (sprite == null)
 		{
 			throw new NullPointerException();
 		}
-		for (int i = 0; i < sprite.height; i++)
+		
+		Util.fillRect(0, 0, sprite.getWidth(), sprite.getHeight(), maxX, maxY, minX, minY, (i, j) -> 
 		{
-			for (int j = 0; j < sprite.width; j++)
-			{
-				if (i > height)
-					return;
-				if (j > width)
-					return;
-				if ((j + x) >= maxx)
-					break;
-				if ((i + y) >= maxy)
-					break;
-				if ((j + x) <= minx)
-					continue;
-				if ((i + y) <= miny)
-					break;
-				int c = sprite.pixels[j + i * sprite.width];
-				{
-					if (c != 0 && c != 0x00ffffff)
-					{
-						int pCol = game.getMain().getPixels()[(j + x) + (i + y) * width];
-						int alpha = getAlpha(c);
-						if (alpha == 128)
-							c = blend(c, pCol);
-						render(j + x, i + y, c);
-					}
-				}
-			}
-		}
+			int c = sprite.pixels[i + j * sprite.getWidth()];
+			int pCol = game.getMain().getPixels()[i + j * width];
+			int alpha = getAlpha(c);
+			if (alpha == 128) c = blend(c, pCol);
+			render(i + x, j + y, c);
+		});
 	}
 
 	public void renderTransparentSprite(Sprite sprite, double x, double y)
 	{
 		renderSprite(
-				Sprite.combine(sprite,
-						Sprite.cut((int) x, (int) y, sprite.getWidth(), sprite.getHeight(), new Sprite(game.getMain().getPixels(), width, height))),
+				SpriteUtils.combine(sprite,
+						SpriteUtils.cut((int) x, (int) y, sprite.getWidth(), sprite.getHeight(), new Sprite(game.getMain().getPixels(), width, height))),
 				x, y);
 	}
+
+	public void renderSprite(Sprite sprite, double x, double y)
+	{
+		renderSprite(sprite, (int) x, (int) y, game.getWidth(), game.getHeight(), -1, -1);
+	}
+
+	/**
+	 * 
+	 * @param screen
+	 * @param sprite - Sprite sheet for textures
+	 * @param x Where on screen should sprite render on X coordinate
+	 * @param y Where on screen should sprite render on Y coordinate
+	 * @param size Size of invidiual sprites
+	 * @param indexX
+	 * @param indexY
+	 */
+	public void renderSprite(Sprite sprite, double x, double y, int size, int indexX, int indexY)
+	{
+		Util.fillRect(indexX * size, indexY * size, size, size, width, height, 0, 0, (i, j) ->
+		{
+			int c = sprite.pixels[i + j * sprite.getWidth()];
+			int pCol = game.getMain().getPixels()[i + j * width];
+			int alpha = getAlpha(c);
+			if (alpha == 128) c = blend(c, pCol);
+			render(i - indexX * size + x, j - indexY * size + y, c);
+		});
+	}
+	
+	public void renderSprite(Sprite sprite, Vec2 loc)
+	{
+		renderSprite(sprite, loc.getX(), loc.getY());
+	}
+	
+	/**
+	 * 
+	 * @param sprite
+	 * @param loc
+	 */
+	public void renderSpriteCentered(Sprite sprite, Vec2 loc)
+	{
+		renderSprite(sprite, loc.getX() - sprite.getWidth() / 2, loc.getY() - sprite.getHeight() / 2);
+	}
+	
 	/**
 	 * 
 	 * Method adapted from
@@ -456,65 +494,6 @@ public class Screen implements Serializable
 		}
 	}*/
 
-	public void renderSprite(Sprite sprite, double x, double y)
-	{
-		renderSprite(sprite, (int) x, (int) y, game.getWidth(), game.getHeight(), -1, -1);
-	}
-
-	/**
-	 * 
-	 * @param screen
-	 * @param sprite - Sprite sheet for textures
-	 * @param x Where on screen should sprite render on X coordinate
-	 * @param y Where on screen should sprite render on Y coordinate
-	 * @param size Size of invidiual sprites
-	 * @param indexX
-	 * @param indexY
-	 */
-	public void renderSprite(Sprite sprite, double x, double y, int size, int indexX, int indexY)
-	{
-		//FIXME:Rendering was throwing ArrayIndexOutOfBoundsException... Temp fixed with try catch... Not good... lagging real bad
-		int x_tile = indexX % size;
-		int y_tile = indexY;
-		
-		for (int i = 0; i < size; i++)
-		{
-			for (int j = 0; j < size; j++)
-			{/*
-				if ((x + i) >= screen.width)
-					return;
-				if ((y) >= screen.height)
-					return;
-				if ((x + i) < 0)
-					return;
-				if ((y) < 0)
-					return;*/
-				if ((int) (j + y) >= height || ((x_tile * size + i) + (y_tile * size + j) * sprite.width) >= width * height)
-					break;
-				try
-				{
-					render((int) (x + i), (int) (y + j), sprite.pixels[(x_tile * size + i) + (y_tile * size + j) * sprite.width]);
-				} catch (ArrayIndexOutOfBoundsException ex)
-				{
-//					continue;
-//					ex.printStackTrace();
-				}
-			}
-		}
-//		game.font.render("" + x_tile, screen, (int) x + 8, (int) y + 22, 1);
-//		game.font.render("" + y_tile, screen, (int) x + 8, (int) y + 10, 1);
-	}
-	
-	public void renderSprite(Sprite sprite, Vec2 loc)
-	{
-		renderSprite(sprite, loc.getX(), loc.getY());
-	}
-	
-	public void renderSpriteCentered(Sprite sprite, Vec2 loc)
-	{
-		renderSprite(sprite, loc.getX() - sprite.getWidth() / 2, loc.getY() - sprite.getHeight() / 2);
-	}
-
 	
 	/**
 	 * 
@@ -539,88 +518,88 @@ public class Screen implements Serializable
 
 		// Normal render
 		default:
-			for (int i = 0; i < sprite.width; i++)
+			for (int i = 0; i < sprite.getWidth(); i++)
 			{
-				for (int j = 0; j < sprite.height; j++)
+				for (int j = 0; j < sprite.getHeight(); j++)
 				{
-					render(x + i, y + j, sprite.pixels[i + j * sprite.width]);
+					render(x + i, y + j, sprite.pixels[i + j * sprite.getWidth()]);
 				}
 			}
 			break;
 
 		case 1:
 			// 90 Rot
-			for (int i = 0; i < sprite.width; i++)
+			for (int i = 0; i < sprite.getWidth(); i++)
 			{
-				for (int j = 0; j < sprite.height; j++)
+				for (int j = 0; j < sprite.getHeight(); j++)
 				{
-					render(x + (sprite.width - i - 1), y + j, sprite.pixels[j + i * sprite.width]);
+					render(x + (sprite.getWidth() - i - 1), y + j, sprite.pixels[j + i * sprite.getWidth()]);
 				}
 			}
 			break;
 
 		case 2:
 			// 180 Rot
-			for (int i = 0; i < sprite.width; i++)
+			for (int i = 0; i < sprite.getWidth(); i++)
 			{
-				for (int j = 0; j < sprite.height; j++)
+				for (int j = 0; j < sprite.getHeight(); j++)
 				{
-					render(x + (sprite.width - i - 1), y + (sprite.height - j - 1), sprite.pixels[i + j * sprite.width]);
+					render(x + (sprite.getWidth() - i - 1), y + (sprite.getHeight() - j - 1), sprite.pixels[i + j * sprite.getWidth()]);
 				}
 			}
 			break;
 
 		case 3:
 			// rot 270
-			for (int i = 0; i < sprite.width; i++)
+			for (int i = 0; i < sprite.getWidth(); i++)
 			{
-				for (int j = 0; j < sprite.height; j++)
+				for (int j = 0; j < sprite.getHeight(); j++)
 				{
-					render(x + i, y + (sprite.height - j - 1), sprite.pixels[j + i * sprite.width]);
+					render(x + i, y + (sprite.getHeight() - j - 1), sprite.pixels[j + i * sprite.getWidth()]);
 				}
 			}
 			break;
 
 		case 4:
 			// Flip Horizontal
-			for (int i = 0; i < sprite.width; i++)
+			for (int i = 0; i < sprite.getWidth(); i++)
 			{
-				for (int j = 0; j < sprite.height; j++)
+				for (int j = 0; j < sprite.getHeight(); j++)
 				{
-					render(x + i, y + (sprite.height - j - 1), sprite.pixels[i + j * sprite.width]);
+					render(x + i, y + (sprite.getHeight() - j - 1), sprite.pixels[i + j * sprite.getWidth()]);
 				}
 			}
 			break;
 
 		case 5:
 			// 90 + Flip horizontal
-			for (int i = 0; i < sprite.width; i++)
+			for (int i = 0; i < sprite.getWidth(); i++)
 			{
-				for (int j = 0; j < sprite.height; j++)
+				for (int j = 0; j < sprite.getHeight(); j++)
 				{
-					render(x + i, y + j, sprite.pixels[j + i * sprite.width]);
+					render(x + i, y + j, sprite.pixels[j + i * sprite.getWidth()]);
 				}
 			}
 			break;
 
 		case 6:
 			// Flip Vertical (180 rot)
-			for (int i = 0; i < sprite.width; i++)
+			for (int i = 0; i < sprite.getWidth(); i++)
 			{
-				for (int j = 0; j < sprite.height; j++)
+				for (int j = 0; j < sprite.getHeight(); j++)
 				{
-					render(x + (sprite.width - i - 1), y + j, sprite.pixels[i + j * sprite.width]);
+					render(x + (sprite.getWidth() - i - 1), y + j, sprite.pixels[i + j * sprite.getWidth()]);
 				}
 			}
 			break;
 
 		case 7:
 			// rot 270 (90 + flip)
-			for (int i = 0; i < sprite.width; i++)
+			for (int i = 0; i < sprite.getWidth(); i++)
 			{
-				for (int j = 0; j < sprite.height; j++)
+				for (int j = 0; j < sprite.getHeight(); j++)
 				{
-					render(x + (sprite.width - i - 1), y + (sprite.height - j - 1), sprite.pixels[j + i * sprite.width]);
+					render(x + (sprite.getWidth() - i - 1), y + (sprite.getHeight() - j - 1), sprite.pixels[j + i * sprite.getWidth()]);
 				}
 			}
 			break;

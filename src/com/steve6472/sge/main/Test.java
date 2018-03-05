@@ -11,6 +11,7 @@ import com.steve6472.sge.gui.Gui;
 
 class Test extends BaseGame
 {
+
 	public static void main(String[] args)
 	{
 		new Test();

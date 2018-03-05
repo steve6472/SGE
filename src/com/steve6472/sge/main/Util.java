@@ -109,7 +109,7 @@ public class Util
 		{
 			return 0;
 		}
-		Random ra = new Random(new Random().nextLong());
+		Random ra = new Random();
 		return ra.nextInt((max - min) + 1) + min;
 	}
 
@@ -202,6 +202,27 @@ public class Util
 	 * @param min
 	 * @return if max == min returns max, if max > min returns random number
 	 */
+	public static long getRandomLong(long max, long min)
+	{
+		if (max == min)
+		{
+			return max;
+		}
+		if (max < min)
+		{
+			return 0;
+		}
+		Random ra = new Random();
+		long r = min + (max - min) * ra.nextLong();
+		return r;
+	}
+
+	/**
+	 * 
+	 * @param max
+	 * @param min
+	 * @return if max == min returns max, if max > min returns random number
+	 */
 	public static float getRandomFloat(float max, float min, long seed)
 	{
 		if (max == min)
@@ -213,6 +234,27 @@ public class Util
 			return 0;
 		}
 		Random ra = new Random(seed);
+		float r = min + (max - min) * ra.nextFloat();
+		return r;
+	}
+
+	/**
+	 * 
+	 * @param max
+	 * @param min
+	 * @return if max == min returns max, if max > min returns random number
+	 */
+	public static float getRandomFloat(float max, float min)
+	{
+		if (max == min)
+		{
+			return max;
+		}
+		if (max < min)
+		{
+			return 0;
+		}
+		Random ra = new Random();
 		float r = min + (max - min) * ra.nextFloat();
 		return r;
 	}
@@ -524,6 +566,18 @@ public class Util
 	}
 
 
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 * @param width
+	 * @param height
+	 * @param maxX
+	 * @param maxY
+	 * @param minX
+	 * @param minY
+	 * @param di x + i, y + j
+	 */
 	public static void fillRect(int x, int y, int width, int height, int maxX, int maxY, int minX, int minY, DoubleInterface<Integer, Integer> di)
 	{
 		
@@ -568,6 +622,14 @@ public class Util
 				di.apply(i + x, j + y);
 			}
 		}
+	}
+
+	public static long locationValue(int x, int y)
+	{
+		long seed = y;
+		seed = x + (seed << 32); // make x and z semi-independent parts of the seed
+		Random r = new Random(seed);
+		return getRandomLong(Long.MAX_VALUE, Long.MIN_VALUE, r.nextLong());
 	}
 
 	

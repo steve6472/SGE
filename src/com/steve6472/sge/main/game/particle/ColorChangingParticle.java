@@ -12,6 +12,7 @@ import com.steve6472.sge.gfx.Sprite;
 
 public class ColorChangingParticle extends AngledParticle
 {
+	private static final long serialVersionUID = -7241722656600969795L;
 	int c1;
 	double ratio = 100d;
 	

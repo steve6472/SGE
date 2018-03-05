@@ -4,6 +4,7 @@ import com.steve6472.sge.gfx.Sprite;
 
 public class BouncingParticle extends Particle
 {
+	private static final long serialVersionUID = -7227425943672444437L;
 	protected double angle = 0;
 	protected double staticY = 0;
 	

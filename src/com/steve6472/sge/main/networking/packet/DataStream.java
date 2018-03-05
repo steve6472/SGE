@@ -38,21 +38,25 @@ public class DataStream implements Serializable
 	
 	public void writeInt(int o) { data.add(o); }
 	
+	public void writeLong(long o) { data.add(o); }
+	
 	public void writeObject(Object o) { data.add(o); }
 	
 	/*
 	 * Reading
 	 */
 	
-	public boolean readBoolean() { return (boolean) read(boolean.class); }
+	public boolean readBoolean() { return (boolean) read(Boolean.class); }
 	
-	public char readChar() { return (char) read(char.class); }
+	public char readChar() { return (char) read(Character.class); }
 	
 	public String readString() { return (String) read(String.class); }
 	
-	public double readDouble() { return (double) read(double.class); }
+	public double readDouble() { return (double) read(Double.class); }
 	
-	public int readInt() { return (int) read(int.class); }
+	public int readInt() { return (int) read(Integer.class); }
+	
+	public long readLong() { return (long) read(Long.class); }
 	
 	public Object readObject() { return (Object) read(Object.class); }
 	
@@ -65,6 +69,13 @@ public class DataStream implements Serializable
 		for (Iterator<Object> iter = data.iterator(); iter.hasNext();)
 		{
 			Object o = iter.next();
+			
+			if (o == null)
+			{
+				iter.remove();
+				return null;
+			}
+			
 			if (clazz.isInstance(o))
 			{
 				iter.remove();

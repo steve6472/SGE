@@ -53,15 +53,15 @@ public class DragFrame extends Component
 //		frame.setLocationRelativeTo(null);
 		if (isCursorInComponent())
 		{
-			if (getMouseHandler().mouseHold && !getMouseHandler().mouseTriggered)
+			if (getMouseHandler().isMouseHolded() && !getMouseHandler().isMouseTriggered())
 			{
 				lastX = getMouseHandler().getPressedMouseXOnScreen();
 				lastY = getMouseHandler().getPressedMouseYOnScreen();
-				getMouseHandler().mouseTriggered = true;
+				getMouseHandler().setTrigger(true);
 				b = true;
 			}
 		}
-		if (getMouseHandler().mouseHold && b)
+		if (getMouseHandler().isMouseHolded() && b)
 		{
 			int x = getMouseHandler().getMouseXOnScreen();
 			int y = getMouseHandler().getMouseYOnScreen();
@@ -70,59 +70,17 @@ public class DragFrame extends Component
 			{
 				int nextX = frame.getLocationOnScreen().x + x - lastX;
 				int nextY = frame.getLocationOnScreen().y + y - lastY;
-				/*
-				GraphicsDevice gd[] = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
-				int width = gd[0].getDisplayMode().getWidth();
-				int height = gd[0].getDisplayMode().getHeight();
 				
-				
-				if (nextX < 0 || nextY < 0 || frame.getX() + game.getWidth() > width || frame.getY() + game.getHeight() > height)
-				{
-					if (nextX < 0 && nextY < 0)
-					{
-						frame.setLocation(0, 0);
-					} else
-					{
-						if (nextX < 0)
-						{
-							frame.setLocation(0, nextY);
-							lastY = mouseHandler.mouseYOnScreen;
-						}
-						if (nextY < 0)
-						{
-							frame.setLocation(nextX, 0);
-							lastX = mouseHandler.mouseXOnScreen;
-						}
-					}
-					if (frame.getX() + game.getWidth() > width && frame.getY() + game.getHeight() > height)
-					{
-						frame.setLocation(width - game.getWidth(), height - game.getHeight());
-					} else
-					{
-						if (frame.getX() + game.getWidth() > width)
-						{
-							frame.setLocation(width - game.getWidth(), nextY);
-							lastY = mouseHandler.mouseYOnScreen;
-						}
-						if (frame.getY() + game.getHeight() > height)
-						{
-							frame.setLocation(nextX, height - game.getHeight());
-							lastX = mouseHandler.mouseXOnScreen;
-						}
-					}
-				} else
-				{*/
-					frame.setLocation(nextX, nextY);
-					
-					if (frame.getLocationOnScreen().y < 0)
-						frame.setLocation(frame.getLocationOnScreen().x, 0);
+				frame.setLocation(nextX, nextY);
 
-					lastX = getMouseHandler().getMouseXOnScreen();
-					lastY = getMouseHandler().getMouseYOnScreen();
-				//}
+				if (frame.getLocationOnScreen().y < 0)
+					frame.setLocation(frame.getLocationOnScreen().x, 0);
+
+				lastX = getMouseHandler().getMouseXOnScreen();
+				lastY = getMouseHandler().getMouseYOnScreen();
 			}
 		}
-		if (!b || !getMouseHandler().mouseHold)
+		if (!b || !getMouseHandler().isMouseHolded())
 		{
 			b = false;
 		}

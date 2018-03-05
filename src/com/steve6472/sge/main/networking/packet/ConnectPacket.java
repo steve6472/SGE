@@ -7,7 +7,7 @@
 
 package com.steve6472.sge.main.networking.packet;
 
-public class ConnectPacket extends Packet
+public class ConnectPacket extends Packet<IPacketHandler>
 {
 
 	public ConnectPacket()
@@ -25,9 +25,8 @@ public class ConnectPacket extends Packet
 	}
 
 	@Override
-	protected int getSize()
+	public void handlePacket(IPacketHandler handler)
 	{
-		return 0;
 	}
 
 }

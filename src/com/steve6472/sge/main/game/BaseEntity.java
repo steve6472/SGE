@@ -12,7 +12,6 @@ public abstract class BaseEntity extends Killable implements IObject, Cloneable,
 	private static final long serialVersionUID = -1719377764373653659L;
 	protected Vec2 loc;
 	protected AABB box;
-	protected Blur blur;
 	protected Sprite sprite;
 	protected EntityList entityList;
 	protected BaseGame game;
@@ -141,6 +140,8 @@ public abstract class BaseEntity extends Killable implements IObject, Cloneable,
 	public void setId(int id) { this.id = id; }
 	
 	public void setSize(double width, double height) { this.setBox(new AABB(getLocation(), width, height)); }
+	
+	public void setMotion(double xa, double ya) { this.xa = xa; this.ya = ya; }
 
 	/**
 	 * Creates new Vec2 from given newLoc
@@ -149,8 +150,6 @@ public abstract class BaseEntity extends Killable implements IObject, Cloneable,
 	public void setNewLocation(Vec2 newLoc) { this.loc = newLoc.clone(); }
 	
 	public void setBox(AABB newBox) { this.box = newBox; }
-	
-	public void setBlur(Blur blur) { this.blur = blur; }
 	
 	public void setSprite(Sprite sprite) { this.sprite = sprite; }
 	
@@ -184,8 +183,6 @@ public abstract class BaseEntity extends Killable implements IObject, Cloneable,
 	public final Vec2 getNewLocation() { return loc.clone(); }
 	
 	public final AABB getBox() { return box; }
-	
-	public final Blur getBlur() { return blur; }
 	
 	public Sprite getSprite() { if (entityList != null) return entityList.getSprites().get(getId()); else return null; }
 	

@@ -14,6 +14,7 @@ import java.net.InetAddress;
 
 import com.steve6472.sge.main.Util;
 import com.steve6472.sge.main.networking.packet.DataStream;
+import com.steve6472.sge.main.networking.packet.IPacketHandler;
 import com.steve6472.sge.main.networking.packet.Packet;
 
 public abstract class UDPClient extends Thread
@@ -23,6 +24,7 @@ public abstract class UDPClient extends Thread
 	DatagramSocket socket;
 	
 	private DatagramPacket sendingPacket;
+	protected IPacketHandler packetHandler;
 	
 	/**
 	 * 
@@ -43,6 +45,11 @@ public abstract class UDPClient extends Thread
 		}
 		
 		sendingPacket = new DatagramPacket(new byte[0], 0, this.ip, port);
+	}
+	
+	public void setIPacketHandler(IPacketHandler packetHandler)
+	{
+		this.packetHandler = packetHandler;
 	}
 	
 	public void connect()
@@ -70,27 +77,33 @@ public abstract class UDPClient extends Thread
 			
 //			System.out.println("Client > " + msg);
 			
-			recievePacket(msg);
+			recievePacket(msg, p);
 		}
 	}
 	
-	public void recievePacket(String msg)
+	public void recievePacket(String msg, DatagramPacket p)
 	{
 		String hexId = msg.substring(0, 4);
 		String dataString = msg.substring(4);
 		DataStream data = (DataStream) Util.fromString(dataString);
 		int id = Util.getIntFromHex(hexId);
-		Packet packet = Packet.getPacket(id);
+		Packet<?> packet = Packet.getPacket(id);
 		if (packet == null)
 			return;
 		packet.input(data);
-		handlePacket(packet, id, data);
+		handlePacket(packet, id, p);
 		
 	}
 	
-	public abstract void handlePacket(Packet packet, int packetId, DataStream packetData);
+//	public abstract void handlePacket(Packet<?> packet, int packetId, DatagramPacket p);
 	
-	public void sendPacket(Packet packet)
+	@SuppressWarnings("unchecked")
+	public void handlePacket(Packet<?> packet, int packetId, DatagramPacket p)
+	{
+		((Packet<IPacketHandler>)packet).handlePacket(packetHandler);
+	}
+	
+	public void sendPacket(Packet<?> packet)
 	{
 		DataStream stream = new DataStream();
 		packet.output(stream);

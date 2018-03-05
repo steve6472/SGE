@@ -68,12 +68,12 @@ public class AnimatedSpriteV2 extends Sprite implements Cloneable
 
 		sprites = new Sprite[frames];
 
-		int w = width / frames;
+		int w = getWidth() / frames;
 
 		for (int f = 0; f < frames; f++)
 		{
-			sprites[f] = new Sprite(w, height);
-			for (int i = 0; i < height; i++)
+			sprites[f] = new Sprite(w, getHeight());
+			for (int i = 0; i < getHeight(); i++)
 			{
 				for (int j = 0; j < w; j++)
 				{
@@ -86,12 +86,12 @@ public class AnimatedSpriteV2 extends Sprite implements Cloneable
 
 	public void generateDebug(boolean exitAfterFinish)
 	{
-		int w = width / frames;
+		int w = getWidth() / frames;
 		
-		BufferedImage img = new BufferedImage(w, height, BufferedImage.TYPE_INT_RGB);
+		BufferedImage img = new BufferedImage(w, getHeight(), BufferedImage.TYPE_INT_RGB);
 		for (int f = 0; f < frames; f++)
 		{
-			for (int i = 0; i < height; i++)
+			for (int i = 0; i < getHeight(); i++)
 			{
 				for (int j = 0; j < w; j++)
 				{
@@ -155,12 +155,6 @@ public class AnimatedSpriteV2 extends Sprite implements Cloneable
 	public int getFrames()
 	{
 		return frames;
-	}
-
-	@Override
-	public AnimatedSpriteV2 clone() throws CloneNotSupportedException
-	{
-		return (AnimatedSpriteV2) super.clone();
 	}
 
 }
